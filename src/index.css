@@ -1,0 +1,13 @@
+:root {
+    --black: #020107;
+    --yellow: #F9EF23;
+    --orange: #E6A12E;
+    --white: #FFFFFF;
+    --font-title: "Anton", serif;
+    --font-text: "Montserrat", serif;
+}
+
+html {
+    background-color: var(--black);
+    font-family: var(--font-text);
+}

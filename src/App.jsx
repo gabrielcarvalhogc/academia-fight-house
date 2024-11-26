@@ -1,11 +1,11 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BasicExample from './components/example';
+import Header from './components/Header';
 
 function App() {
 
   return (
-    <BasicExample/>
+    <Header/>
   )
 }
 
