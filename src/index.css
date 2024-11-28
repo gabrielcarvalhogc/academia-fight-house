@@ -7,7 +7,6 @@
     --font-text: "Montserrat", serif;
 }
 
-html {
-    background-color: var(--black);
-    font-family: var(--font-text);
+body {
+    background-color: var(--black);    
 }
