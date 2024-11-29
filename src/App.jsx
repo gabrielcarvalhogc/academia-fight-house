@@ -5,6 +5,7 @@ import Header from './components/header/Header';
 import SobreNos from './components/sobreNos/SobreNos';
 import Modalidades from './components/modalidades/Modalidades';
 import Planos from './components/planos/Planos';
+import Local from './components/local/Local';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <SobreNos/>
         <Modalidades/>
         <Planos/>
+        <Local/>
       </main>
     </>
   )

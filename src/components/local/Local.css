@@ -1,0 +1,13 @@
+.local-container {
+    width: 60%;
+    background-color: var(--yellow);
+    margin: auto;
+}
+
+.local-titulo {
+    font-family: var(--font-title);
+}
+
+.local-end {
+    font-family: var(--font-text);
+}
