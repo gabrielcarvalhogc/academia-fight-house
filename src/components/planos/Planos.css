@@ -1,0 +1,18 @@
+.card-header {
+    background-color: var(--yellow);
+}
+
+.card-title {
+    font-family: var(--font-title);
+}
+
+.button {
+    background-color: var(--yellow);
+    font-family: var(--font-title);
+}
+
+.button:hover {
+    background-color: var(--yellow);
+    box-shadow: 0 0 2px 4px var(--yellow);
+    scale: 1.1;
+}
