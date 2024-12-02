@@ -1,0 +1,15 @@
+.footer {
+    background-color: var(--yellow);
+    font-family: var(--font-text);
+}
+
+.font-title {
+    font-family: var(--font-title);
+}
+
+.divisor {
+    margin: 0 auto;
+    width: 80%;
+    height: 1px;
+    background-color: #00000059;
+}

@@ -6,6 +6,7 @@ import SobreNos from './components/sobreNos/SobreNos';
 import Modalidades from './components/modalidades/Modalidades';
 import Planos from './components/planos/Planos';
 import Local from './components/local/Local';
+import Footer from './components/footer/Footer';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Planos/>
         <Local/>
       </main>
+      <Footer/>
     </>
   )
 }
