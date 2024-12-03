@@ -9,13 +9,13 @@ function CardModalidade({ titulo, imagem, dias, horarios, subtitulo, descricao, 
             className='card text-black mx-auto rounded-4 scroll-reveal-from-left'
         >
             <Card.Title 
-                className='card-title text-center text-uppercase fs-3 p-3'
+                className='card-title text-center text-uppercase fs-1 p-3'
             >
                 {titulo}
             </Card.Title>
 
             <Card.Img src={imagem} className='card-img rounded-0' />
-            <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center'>
+            <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center p-0 pt-4'>
                 {isLast ? (
                     <Button 
                         href="https://wa.link/xclo31"
@@ -31,7 +31,7 @@ function CardModalidade({ titulo, imagem, dias, horarios, subtitulo, descricao, 
                         style={{ fontFamily: 'var(--font-title)' }}
                     >
                         {dias.map((dia, i) => (
-                            <div key={i} className='text-center'>{dia} - {horarios[i]}</div>
+                            <div key={i} className='text-center fs-3'>{dia} - {horarios[i]}</div>
                         ))}
                     </Card.Title>
                 )}
