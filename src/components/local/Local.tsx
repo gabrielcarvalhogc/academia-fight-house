@@ -3,7 +3,12 @@ import "./Local.css";
 
 function Local() {
     return (
-        <section className="mb-5">
+        <section 
+            className="mb-5"
+            data-bs-spy="scroll" 
+            data-bs-target="#navID"
+            id='localizacao'
+        >
             <h2 className="local-titulo fs-1 text-uppercase text-white text-center p-5">Localização:</h2>
             <div className="local-container rounded-5">
                 <h3 className="local-titulo py-3 text-center text-uppercase fs-1">Local</h3>

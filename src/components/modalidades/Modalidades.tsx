@@ -24,8 +24,14 @@ function Modalidades() {
     }, []);
 
     return (
-        <Row className="g-4 justify-content-md-center mt-5">
-            <h2 className='text-center text-uppercase my-5 fs-1 fw-bold text-white' style={{fontFamily: "var(--font-title)"}}>Nossas modalidades:</h2>
+        <Row 
+            className="g-4 justify-content-md-center mt-5"
+            data-bs-spy="scroll" 
+            data-bs-target="#navID"
+            id='modalidades'
+
+        >
+            <h2 className='text-center text-uppercase my-5 fs-1 text-white' style={{fontFamily: "var(--font-title)"}}>Nossas modalidades:</h2>
             {modalidades.map((mod, index) => (
                 <Col xs={12} sm={8} md={6} lg={4} key={index} className='mx-auto'> 
                     <CardModalidade

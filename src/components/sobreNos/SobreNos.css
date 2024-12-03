@@ -1,0 +1,22 @@
+.sobre-title {
+    font-family: var(--font-title);
+}
+
+.sobre-image {
+    background-image: url(../../assets/academia-background.png);
+    min-height: 200px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sobre-button {
+    background-color: var(--yellow);
+    font-family: var(--font-text);
+}
+
+.sobre-button:hover {
+    background-color: var(--yellow);
+    box-shadow: 0 0 2px 4px #f9ee2361;
+}

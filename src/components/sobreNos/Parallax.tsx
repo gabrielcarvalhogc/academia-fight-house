@@ -1,23 +1,14 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import backgroundImage from "../../assets/academia-background.png";
+import "./SobreNos.css";
 
 function Parallax() {
     return (
-        <div className="position-relative"
-            style={{
-                backgroundImage: `url(${backgroundImage})`,
-                minHeight: '200px',
-                backgroundAttachment: "fixed",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover"
-            }}
-        >
+        <div className="sobre-image position-relative mt-4">
             <Button 
-                href="#" 
-                className="py-3 text-black fw-bold text-uppercase position-absolute top-50 start-50 translate-middle" 
-                style={{backgroundColor: "var(--yellow)", fontFamily: "var(--font-text)"}}
+                href="https://wa.link/hm1e2n"
+                target="_blank"
+                className="sobre-button py-3 text-black fw-bold text-uppercase position-absolute top-50 start-50 translate-middle" 
             >
                 <i className="bi bi-whatsapp pe-2"></i>
                 Fale conosco

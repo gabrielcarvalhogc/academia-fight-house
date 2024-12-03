@@ -7,11 +7,16 @@ import { Col, Row } from 'react-bootstrap';
 function Planos() {
     return (
         <>
-            <h2 className='card-title text-center text-uppercase my-5 fs-1 fw-bold  text-white'>Nossos Planos:</h2>
+            <h2
+                className='card-title text-center text-uppercase my-5 fs-1 fw-bold  text-white'
+                data-bs-spy="scroll" 
+                data-bs-target="#navID"
+                id='nossosPlanos'
+            >Nossos Planos:</h2>
 
-            <Row>
+            <Row >
 
-                <Col xs={12} md={6} className='mb-5'>
+                <Col xs={12} md={6} className='mb-5' >
                     <Card className="text-center mx-auto bg-white rounded-4">
                         <Card.Header className='card-header text-uppercase p-3 rounded-top-4'>
                             <Card.Title className='card-title fs-3'>Plano mensal</Card.Title>
@@ -30,7 +35,11 @@ function Planos() {
                                 <i className="bi bi-cash-stack fw-bold fs-4">  R$165,00</i>
                             </Card.Text>
                             <Card.Text className='fs-6 text-lowercase'>Agende uma aula experimental</Card.Text>
-                            <Button className='button p-3 rounded-4 text-black fw-bold text-uppercase'>Quero começar</Button>
+                            <Button 
+                                className='button p-3 rounded-4 text-black fw-bold text-uppercase'
+                                href='https://wa.link/hm1e2n'
+                                target='_blank'
+                            >Quero começar</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -54,7 +63,11 @@ function Planos() {
                                 <i className="bi bi-cash-stack fw-bold fs-4">  R$230,00</i>
                             </Card.Text>
                             <Card.Text className='fs-6 text-lowercase'>Agende uma aula experimental</Card.Text>
-                            <Button className='button p-3 rounded-4 text-black fw-bold text-uppercase'>Quero começar</Button>
+                            <Button 
+                                className='button p-3 rounded-4 text-black fw-bold text-uppercase'
+                                href='https://wa.link/hm1e2n'
+                                target='_blank'
+                            >Quero começar</Button>
                         </Card.Body>
                     </Card>
                 </Col >

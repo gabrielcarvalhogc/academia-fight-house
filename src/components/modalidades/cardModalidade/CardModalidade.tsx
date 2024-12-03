@@ -18,7 +18,8 @@ function CardModalidade({ titulo, imagem, dias, horarios, subtitulo, descricao, 
             <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center' style={{ marginTop: '73px', width: '350px', height: '150px' }}>
                 {isLast ? (
                     <Button 
-                        href="#" 
+                        href="https://wa.link/xclo31"
+                        target='_blank' 
                         className="personal-button p-3 text-black fw-bold fs-6 m-auto"
                     >
                         <i className="bi bi-whatsapp pe-2"></i> 
