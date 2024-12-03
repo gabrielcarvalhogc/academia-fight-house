@@ -11,7 +11,7 @@ function Modalidades() {
                 const cardTop = card.getBoundingClientRect().top;
                 const windowHeight = window.innerHeight;
 
-                if (cardTop < windowHeight + 200) {
+                if (cardTop < windowHeight - 200) {
                     card.classList.add('show');
                 }
             });

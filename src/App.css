@@ -5,7 +5,7 @@
   
 body {
     background-color: var(--black);
-    padding-top: 113px;
+    padding-top: 110px;
     overflow-y: scroll;
     overflow-x: hidden;
 }

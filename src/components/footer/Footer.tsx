@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footer.css";
+import logo from '../../assets/logo-fight-house-pequeno.png';
 
 function Footer() {
     return(
@@ -11,7 +12,7 @@ function Footer() {
         >
             <div className="d-flex justify-content-center align-items-center my-3 gap-3">
                 <img 
-                    src="/src/assets/logo-fight-house-pequeno.png" 
+                    src={logo} 
                     alt="Logo da academia fight house" 
                     width={100}
                     height={100}
