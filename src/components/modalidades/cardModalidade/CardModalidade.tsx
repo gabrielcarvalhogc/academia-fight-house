@@ -15,7 +15,7 @@ function CardModalidade({ titulo, imagem, dias, horarios, subtitulo, descricao, 
             </Card.Title>
 
             <Card.Img src={imagem} className='card-img rounded-0' />
-            <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center' style={{ marginTop: '73px', width: '350px', height: '150px' }}>
+            <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center'>
                 {isLast ? (
                     <Button 
                         href="https://wa.link/xclo31"

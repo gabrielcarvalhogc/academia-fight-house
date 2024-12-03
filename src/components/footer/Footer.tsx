@@ -11,7 +11,7 @@ function Footer() {
         >
             <div className="d-flex justify-content-center align-items-center my-3 gap-3">
                 <img 
-                    src="/src/assets/logo-fight-house-pequeno.png" 
+                    src="../../src/assets/logo-fight-house-pequeno.png" 
                     alt="Logo da academia fight house" 
                     width={100}
                     height={100}
