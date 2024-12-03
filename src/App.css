@@ -1,0 +1,12 @@
+/* App.css */
+:root {
+    --black: #020107; /* Substitua pelo valor desejado */
+}
+  
+body {
+    background-color: var(--black);
+    padding-top: 113px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+  

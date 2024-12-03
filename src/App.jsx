@@ -1,4 +1,5 @@
-import './App.css'
+import './App.css';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Header from './components/header/Header';
@@ -13,7 +14,7 @@ function App() {
   return (
     <>
       <Header/>
-      <main style={{backgroundColor: 'var(--black)'}}>
+      <main>
         <SobreNos/>
         <Modalidades/>
         <Planos/>
