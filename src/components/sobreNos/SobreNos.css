@@ -6,6 +6,7 @@
     background-image: url(../../assets/academia-background.png);
     min-height: 200px;
     background-attachment: fixed;
+    -webkit-background-attachment: scroll;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

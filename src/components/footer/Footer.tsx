@@ -18,16 +18,17 @@ function Footer() {
                     height={100}
                 />
                 <div>
-                    <h5 className="font-title text-uppercase fs-4 pb-0 mb-0">Academia fight house</h5>
+                    <h4 className="font-title text-uppercase fs-4 pb-0 mb-0">Academia fight house</h4>
                     <p className="pb-0 mb-0">Faça parte desta família</p>
                 </div>
             </div>
             <div className="divisor mb-3"></div>
-            <div className="d-flex flex-column gap-3 ps-4 fs-5">
+            <address className="d-flex flex-column gap-3 ps-4 fs-5">
                 <a 
                     href="https://maps.app.goo.gl/LMqMu6hdkqhpQJHt9" 
                     target='_blank' 
                     className="fw-bold link-underline bold link-opacity-50-hover link-underline-opacity-0"
+                    aria-label="Localização da academia no Google Maps"
                 >
                     <i className="bi bi-geo-alt pe-2"></i>
                     Rua 25 QD 33 Lote 22 - Jardim Oriente
@@ -48,7 +49,7 @@ function Footer() {
                     <i className="bi bi-whatsapp pe-2"></i>
                     +55 61 8186-5159
                 </a>
-            </div>
+            </address>
         </footer>
     )
 }

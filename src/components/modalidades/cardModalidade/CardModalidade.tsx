@@ -14,7 +14,7 @@ function CardModalidade({ titulo, imagem, dias, horarios, subtitulo, descricao, 
                 {titulo}
             </Card.Title>
 
-            <Card.Img src={imagem} className='card-img rounded-0' />
+            <Card.Img src={imagem} alt={`Exemplo da prática da modalidade ${titulo}`} className='card-img rounded-0' />
             <Card.ImgOverlay className='d-flex flex-column justify-content-center align-self-center p-0 pt-4'>
                 {isLast ? (
                     <Button 

@@ -8,6 +8,7 @@ function Local() {
             data-bs-spy="scroll" 
             data-bs-target="#navID"
             id='localizacao'
+            aria-labelledby="localizacao-title"
         >
             <h2 className="local-titulo fs-1 text-uppercase text-white text-center p-5">Localização:</h2>
             <div className="local-container rounded-5">
@@ -20,10 +21,10 @@ function Local() {
                         referrerPolicy="no-referrer-when-downgrade"
                     ></iframe>
                 </div>
-                <p className="local-end p-3 fs-5 text-center">
+                <address className="local-end p-3 fs-5 text-center">
                     <i className="bi bi-geo-alt"></i>
                     Rua 25 QD 33 Lote 22 - Jardim Oriente - Valparaíso de Goiás
-                </p>
+                </address>
             </div>
         </section>
     )
