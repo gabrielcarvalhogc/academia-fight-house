@@ -62,7 +62,7 @@ function Planos() {
                                 4 Pessoas:<br />
                                 <i className="bi bi-cash-stack fw-bold fs-4">  R$230,00</i>
                             </Card.Text>
-                            <Card.Text className='fs-6 text-lowercase'>Agende uma aula experimental</Card.Text>
+                            <Card.Text className='fs-6 text-lowercase p-0'>Valor mensal <br/>Agende uma aula experimental</Card.Text>
                             <Button 
                                 className='button p-3 rounded-4 text-black fw-bold text-uppercase'
                                 href='https://wa.link/hm1e2n'

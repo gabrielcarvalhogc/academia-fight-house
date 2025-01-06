@@ -8,16 +8,16 @@ export const modalidades = [
     {
         "titulo": "Boxe",
         "imagem": `${boxe}`,
-        "dias": ["seg/qua"],
-        "horarios": ["07:00 hrs"],
+        "dias": ["ter/qui", "seg/qua/sex"],
+        "horarios": ["07:00 hrs", "19:00 hrs"],
         "subtitulo": "Sobre o boxe",
         "descricao": "O boxe é uma luta que utiliza apenas os punhos para ataque e defesa. Trabalha resistência, coordenação e agilidade, ideal para quem quer competir ou melhorar a forma física."
     },
     {
         "titulo": "Kickboxing",
         "imagem": `${kickboxing}`,
-        "dias": ["seg/qua/sex", "ter/qui", "seg/qua/sex"],
-        "horarios": ["08:00 hrs", "07:00 hrs", "19:00 hrs"],
+        "dias": ["seg/qua/sex", "seg/qua/sex"],
+        "horarios": ["08:00 hrs", "20:00 hrs"],
         "subtitulo": "Sobre o kickboxing",
         "descricao": "O kickboxing é uma luta que combina socos e chutes, com até 8 modalidades que variam nas regras e técnicas. A prática é excelente para quem busca competir, melhorar o condicionamento físico e desenvolver força, resistência e coordenação."
     },
@@ -32,7 +32,7 @@ export const modalidades = [
     {
         "titulo": "Muay thai",
         "imagem": `${muaythai}`,
-        "dias": ["ter/qui"],
+        "dias": ["ter/qui/sex"],
         "horarios": ["20:00 hrs"],
         "subtitulo": "Sobre o Muay thai",
         "descricao": "O Muay Thai é uma arte marcial tailandesa que utiliza golpes com os punhos, cotovelos, joelhos e pernas, conhecida como a “arte das oito armas”. A prática melhora força, resistência e flexibilidade, sendo ideal para defesa pessoal, condicionamento físico e competições."
