@@ -32,8 +32,8 @@ export const modalidades = [
     {
         "titulo": "Muay thai",
         "imagem": `${muaythai}`,
-        "dias": ["ter/qui/sex"],
-        "horarios": ["20:00 hrs"],
+        "dias": ["ter/qui","ter/qui", "seg/qua/sex"],
+        "horarios": ["20:00 hrs", "21:00 hrs", "07:00 hrs"],
         "subtitulo": "Sobre o Muay thai",
         "descricao": "O Muay Thai é uma arte marcial tailandesa que utiliza golpes com os punhos, cotovelos, joelhos e pernas, conhecida como a “arte das oito armas”. A prática melhora força, resistência e flexibilidade, sendo ideal para defesa pessoal, condicionamento físico e competições."
     },
