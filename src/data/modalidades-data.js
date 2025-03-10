@@ -3,6 +3,7 @@ import kickboxing from "../assets/modalidade-kickboxing.jpg";
 import kickboxingInfantil from "../assets/modalidade-turma-kids.jpg";
 import muaythai from "../assets/modalidade-muaythai.jpg";
 import personal from "../assets/modalidade-personal.jpg";
+import taekwondo from "../assets/modalidade-taekwondo.jpg";
 
 export const modalidades = [
     {
@@ -36,6 +37,14 @@ export const modalidades = [
         "horarios": ["20:00 hrs", "21:00 hrs", "07:00 hrs"],
         "subtitulo": "Sobre o Muay thai",
         "descricao": "O Muay Thai é uma arte marcial tailandesa que utiliza golpes com os punhos, cotovelos, joelhos e pernas, conhecida como a “arte das oito armas”. A prática melhora força, resistência e flexibilidade, sendo ideal para defesa pessoal, condicionamento físico e competições."
+    },
+    {
+        "titulo": "Taekwondo",
+        "imagem": `${taekwondo}`,
+        "dias": ["ter/qui"],
+        "horarios": ["17:30 hrs"],
+        "subtitulo": "Sobre o Taekwondo",
+        "descricao": "Arte marcial coreana que combina técnica, velocidade e explosão, com ênfase em chutes rápidos e precisos. Além de melhorar condicionamento físico, flexibilidade e coordenação, desenvolve disciplina, autocontrole e confiança, fundamentais dentro e fora do tatame.Indicado para crianças, jovens e adultos, o Taekwondo é ideal para quem busca defesa pessoal, competições ou evolução física e mental."
     },
     {
         "titulo": "Aula personal",
