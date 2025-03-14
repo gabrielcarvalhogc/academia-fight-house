@@ -23,7 +23,7 @@ function Footer() {
                 </div>
             </div>
             <div className="divisor mb-3"></div>
-            <address className="d-flex flex-column gap-3 ps-4 fs-5">
+            <address className="d-flex flex-column gap-3 ps-4 fs-5 mb-0">
                 <a 
                     href="https://maps.app.goo.gl/LMqMu6hdkqhpQJHt9" 
                     target='_blank' 

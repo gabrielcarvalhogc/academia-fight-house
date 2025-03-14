@@ -10,7 +10,7 @@ function HomePage() {
     return (
         <>
             <Header />
-            <main>
+            <main style={{backgroundColor: "var(--black)"}}>
                 <SobreNos />
                 <Modalidades />
                 <Planos />

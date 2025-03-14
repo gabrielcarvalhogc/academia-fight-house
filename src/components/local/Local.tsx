@@ -4,7 +4,7 @@ import "./Local.css";
 function Local() {
     return (
         <section 
-            className="mb-5"
+            className="pb-5"
             data-bs-spy="scroll" 
             data-bs-target="#navID"
             id='localizacao'

@@ -6,7 +6,3 @@
     --font-title: "Anton", serif;
     --font-text: "Montserrat", serif;
 }
-
-body {
-    background-color: var(--black);    
-}
