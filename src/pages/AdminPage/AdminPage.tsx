@@ -2,52 +2,17 @@ import React, { useEffect, useState } from 'react';
 import AdminLogin from '../../components/adminLogin/AdminLogin';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
 import Spinner from 'react-bootstrap/esm/Spinner';
-
-interface JwtPayload {
-    exp: number;
-}
+import { useAuth } from '../../hooks/useAuth.ts';
 
 const AdminPage: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [token, setToken] = useState<string | null>(null);
+    const { token, setToken, isLoading } = useAuth();
     const navigate = useNavigate();
 
-    const isTokenExpired = (token: string): boolean => {
-        try {
-            const decoded: JwtPayload = jwtDecode(token);
-            const currentTime = Date.now() / 1000;
-            return decoded.exp < currentTime;
-        } catch (e) {
-            console.error("Erro ao decodificar o token", e);
-            return true;
-        }
-    };
-
-    const checkAuthentication = () => {
-        const storedToken = Cookies.get("jwtToken") || "";
-        if (storedToken && !isTokenExpired(storedToken)) {
-            setToken(storedToken);
-        } else {
-            Cookies.remove("jwtToken");
-            setToken(null);
-        }
-        setIsLoading(false);
-    };
-
     useEffect(() => {
-        checkAuthentication();
-
-        const interval = setInterval(() => {
-            if (token && isTokenExpired(token)) {
-                Cookies.remove("jwtToken");
-                setToken(null);
-                navigate("/admin");
-            }
-        }, 600000); // 10 minutos
-
-        return () => clearInterval(interval);
+        if (token) {
+            navigate("/admin");
+        }
     }, [token, navigate]);
 
     if (isLoading) {

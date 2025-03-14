@@ -33,23 +33,21 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <main className="bg-secondary p-5 w-100 h-100 mx-auto rounded-4">
+    <Form className="w-25" onSubmit={handleSubmit}>
       <h1 className="mb-4">Admin Login</h1>
-      <Form className="w-25" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicUser">
-          <Form.Label>Usuário:</Form.Label>
-          <Form.Control type="text" placeholder="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} required/>
-        </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicUser">
+        <Form.Label>Usuário:</Form.Label>
+        <Form.Control type="text" placeholder="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} required />
+      </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Senha:</Form.Label>
-          <Form.Control type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
-    </main>
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Senha:</Form.Label>
+        <Form.Control type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Login
+      </Button>
+    </Form>
   );
 };
 
