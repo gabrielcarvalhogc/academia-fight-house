@@ -4,12 +4,13 @@ import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import Spinner from 'react-bootstrap/esm/Spinner';
 import { useAuth } from '../../hooks/useAuth.ts';
-import { FeedbackMessage, Product, ProductFormData } from '../../types/productTypes.ts';
+import { Product, ProductFormData } from '../../types/productTypes.ts';
 import productService from '../../services/productService.ts';
 import ProductTable from '../../components/productTable/productTable.tsx';
 import CustomPagination from '../../components/pagination/CustonPagination.tsx';
 import ProductModal from '../../components/productModal/ProductModal.tsx';
 import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageComponent.tsx';
+import { FeedbackMessage } from '../../types/feedback.ts';
 
 
 const AdminPage: React.FC = () => {

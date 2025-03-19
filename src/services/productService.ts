@@ -1,4 +1,5 @@
-import { Product, PageResponse, ProductFormData } from '../types/productTypes';
+import { PageResponse } from '../types/pagination';
+import { Product, ProductFormData } from '../types/productTypes';
 import apiService from './apiService';
 
 const PRODUCT_ENDPOINT = import.meta.env.VITE_PRODUCT_ENDPOINT;

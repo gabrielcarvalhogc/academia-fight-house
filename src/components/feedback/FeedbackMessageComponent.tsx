@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
-import { FeedbackMessage as FeedbackMessageType } from '../../types/productTypes';
+import { FeedbackMessage as FeedbackMessageType } from '../../types/feedback';
 
 interface FeedbackMessageProps {
     feedback: FeedbackMessageType;
