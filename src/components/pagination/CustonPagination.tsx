@@ -14,10 +14,6 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
     onPageChange,
     maxVisiblePages = 5
 }) => {
-    // Não renderizar paginação se houver apenas uma página
-    if (totalPages <= 1) {
-        return null;
-    }
 
     // Lógica para exibir um número limitado de páginas quando houver muitas
     const renderPageNumbers = () => {

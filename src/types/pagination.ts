@@ -8,3 +8,20 @@ export interface PageResponse<T> {
     last: boolean;
     empty: boolean;
 }
+
+export interface HateoasResponse<T> {
+    _embedded: {
+        productResponseDTOList: T[];
+    };
+    _links: {
+        self: {
+            href: string;
+        };
+    };
+    page: {
+        size: number;
+        totalElements: number;
+        totalPages: number;
+        number: number;
+    };
+}

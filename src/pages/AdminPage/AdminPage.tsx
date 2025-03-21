@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AdminLogin from '../../components/adminLogin/AdminLogin';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import Spinner from 'react-bootstrap/esm/Spinner';
 import { useAuth } from '../../hooks/useAuth.ts';
@@ -45,29 +45,18 @@ const AdminPage: React.FC = () => {
             
             //console.log('Resposta da API:', JSON.stringify(response));
             
-            // Verificação para diferentes formatos de resposta
-            if (response) {
-                if (Array.isArray(response)) {
-                    // Se a resposta já é um array, use-a diretamente
-                    setProducts(response);
+            if (response && response._embedded && response._embedded.productResponseDTOList) {
+                setProducts(response._embedded.productResponseDTOList);
+                
+                if (response.page) {
                     setPageInfo({
-                        ...pageInfo,
-                        totalPages: 1 // Assume uma única página se não há informação de paginação
+                        currentPage: response.page.number,
+                        totalPages: response.page.totalPages,
+                        pageSize: response.page.size
                     });
-                } else if (response && Array.isArray(response.content)) {
-                    // Se a resposta é um objeto com a propriedade content como array
-                    setProducts(response.content);
-                    setPageInfo({
-                        currentPage: response.number || 0,
-                        totalPages: response.totalPages || 1,
-                        pageSize: response.size || 10
-                    });
-                } else {
-                    console.warn('Formato de resposta não reconhecido:', response);
-                    setProducts([]); 
                 }
             } else {
-                console.warn('Resposta da API vazia');
+                console.warn('Formato de resposta não reconhecido ou lista vazia:', response);
                 setProducts([]);
             }
         } catch (error) {
@@ -117,6 +106,15 @@ const AdminPage: React.FC = () => {
         setPageInfo(prev => ({
             ...prev,
             currentPage: page
+        }));
+    };
+
+    const handlePageSizeChange = (event: React.ChangeEvent<any>) => {
+        const target = event.target as HTMLSelectElement;
+        setPageInfo(prev => ({
+            ...prev,
+            pageSize: Number(target.value),
+            currentPage: 0
         }));
     };
 
@@ -223,6 +221,16 @@ const AdminPage: React.FC = () => {
                         feedback={feedback}
                         onClear={clearFeedback}
                     />
+
+                    <Form.Group controlId="pageSizeSelect" className="mb-4">
+                        <Form.Label>Itens por página:</Form.Label>
+                        <Form.Control as="select" value={pageInfo.pageSize} onChange={handlePageSizeChange}>
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                        </Form.Control>
+                    </Form.Group>
 
                     {loading ? (
                         <div className="text-center py-4">

@@ -1,21 +1,19 @@
-import { PageResponse } from '../types/pagination';
+import { HateoasResponse } from '../types/pagination';
 import { Product, ProductFormData } from '../types/productTypes';
 import apiService from './apiService';
 
 const PRODUCT_ENDPOINT = import.meta.env.VITE_PRODUCT_ENDPOINT;
-const GET_PRODUCTS_ENDPOINT = import.meta.env.VITE_GET_PRODUCTS_ENDPOINT;
-
 
 export const productService = {
     /**
-     * Obtém uma lista paginada de produtos
+     * Obtém uma lista paginada de produtos no formato HATEOAS
      * @param page Número da página (começando em 0)
      * @param size Tamanho da página
-     * @returns Resposta paginada contendo os produtos
+     * @returns Resposta HATEOAS contendo os produtos
      */
-    getProducts: async (page: number = 0, size: number = 10): Promise<PageResponse<Product>> => {
+    getProducts: async (page: number = 0, size: number = 10): Promise<HateoasResponse<Product>> => {
         try {
-            return await apiService.get<PageResponse<Product>>(`${GET_PRODUCTS_ENDPOINT}?page=${page}&size=${size}`);
+            return await apiService.get<HateoasResponse<Product>>(`${PRODUCT_ENDPOINT}?page=${page}&size=${size}`);
         } catch (error) {
             console.error('Erro ao buscar produtos:', error);
             throw error;
