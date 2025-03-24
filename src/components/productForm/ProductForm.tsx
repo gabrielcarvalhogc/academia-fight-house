@@ -26,7 +26,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-    // Inicializa o formulário com os dados do produto quando estiver editando
     useEffect(() => {
         if (initialData) {
             setFormData({
@@ -74,14 +73,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
             errors.category = 'Categoria é obrigatória';
         }
 
-        if (!formData.size.trim()) {
-            errors.size = 'Tamanho é obrigatório';
-        }
-
         if (!formData.code) {
             errors.code = 'Código é obrigatório';
         } else if (isNaN(Number(formData.code))) {
             errors.code = 'Código deve ser um número';
+        }
+
+        if (!formData.image && !isEditing) {
+            errors.image = 'Imagem é obrigatória';
         }
 
         setValidationErrors(errors);
@@ -140,13 +139,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <Row>
                 <Col md={6}>
                     <Form.Group className="mb-3">
-                        <Form.Label>Tamanho *</Form.Label>
+                        <Form.Label>Tamanho</Form.Label>
                         <Form.Control
                             type="text"
                             name="size"
                             value={formData.size}
                             onChange={handleInputChange}
-                            isInvalid={!!validationErrors.size}
                         />
                         <Form.Control.Feedback type="invalid">
                             {validationErrors.size}
@@ -172,13 +170,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
             <Form.Group className="mb-3">
                 <Form.Label>
-                    Imagem {isEditing ? '(Deixe em branco para manter a imagem atual)' : ''}
+                    Imagem * {isEditing ? '(Deixe em branco para manter a imagem atual)' : ''}
                 </Form.Label>
                 <Form.Control
                     type="file"
                     name="image"
                     onChange={handleImageChange}
                     accept="image/*"
+                    isInvalid={!!validationErrors.image}
                 />
             </Form.Group>
 

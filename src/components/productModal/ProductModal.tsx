@@ -1,5 +1,3 @@
-// src/components/ProductModal/ProductModal.tsx
-
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import ProductForm from '../productForm/ProductForm';

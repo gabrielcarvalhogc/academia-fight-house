@@ -204,7 +204,7 @@ const AdminPage: React.FC = () => {
 
     return (
         <Container className="py-4">
-            <Card>
+            <Card className='w-100'>
                 <Card.Body>
                     <Row className="mb-4 align-items-center">
                         <Col>
