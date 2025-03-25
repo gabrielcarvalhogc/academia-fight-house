@@ -3,6 +3,7 @@ import { Product, ProductFormData } from '../types/productTypes';
 import apiService from './apiService';
 
 const PRODUCT_ENDPOINT = import.meta.env.VITE_PRODUCT_ENDPOINT;
+const PRODUCT_GET_ENDPOINT = import.meta.env.VITE_GET_PRODUCTS_ENDPOINT;
 
 export const productService = {
     /**
@@ -16,6 +17,21 @@ export const productService = {
             return await apiService.get<HateoasResponse<Product>>(`${PRODUCT_ENDPOINT}?page=${page}&size=${size}`);
         } catch (error) {
             console.error('Erro ao buscar produtos:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Busca produtos filtrados por categoria.
+     * Utiliza endpoint com PathVariable: /products/category/{category}
+     * @param category Nome da categoria a ser filtrada
+     * @returns Lista de produtos filtrados pela categoria
+     */
+    getProductsByCategory: async (category: string): Promise<Product[]> => {
+        try {
+            return await apiService.get<Product[]>(`${PRODUCT_GET_ENDPOINT}/category/${category}`);
+        } catch (error) {
+            console.error('Erro ao buscar produtos por categoria:', error);
             throw error;
         }
     },

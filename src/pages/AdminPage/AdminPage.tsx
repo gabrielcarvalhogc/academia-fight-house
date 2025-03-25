@@ -10,8 +10,8 @@ import ProductTable from '../../components/productTable/productTable.tsx';
 import CustomPagination from '../../components/pagination/CustonPagination.tsx';
 import ProductModal from '../../components/productModal/ProductModal.tsx';
 import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageComponent.tsx';
+import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
 import { FeedbackMessage } from '../../types/feedback.ts';
-
 
 const AdminPage: React.FC = () => {
     const { token, setToken, isLoading: isAuthLoading } = useAuth();
@@ -26,7 +26,7 @@ const AdminPage: React.FC = () => {
         totalPages: 1,
         pageSize: 10
     });
-
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -37,27 +37,35 @@ const AdminPage: React.FC = () => {
 
     const fetchProducts = useCallback(async () => {
         try {
-            setLoading(true);            
-            const response = await productService.getProducts(
-                pageInfo.currentPage,
-                pageInfo.pageSize
-            );
-            
-            //console.log('Resposta da API:', JSON.stringify(response));
-            
-            if (response && response._embedded && response._embedded.productResponseDTOList) {
-                setProducts(response._embedded.productResponseDTOList);
-                
-                if (response.page) {
-                    setPageInfo({
-                        currentPage: response.page.number,
-                        totalPages: response.page.totalPages,
-                        pageSize: response.page.size
-                    });
-                }
+            setLoading(true);
+            if (selectedCategory) {
+                const filteredProducts = await productService.getProductsByCategory(selectedCategory);
+                setProducts(filteredProducts);
+                setPageInfo({
+                    currentPage: 0,
+                    totalPages: 1,
+                    pageSize: filteredProducts.length || 10
+                });
             } else {
-                console.warn('Formato de resposta não reconhecido ou lista vazia:', response);
-                setProducts([]);
+                const response = await productService.getProducts(
+                    pageInfo.currentPage,
+                    pageInfo.pageSize
+                );
+                
+                if (response && response._embedded && response._embedded.productResponseDTOList) {
+                    setProducts(response._embedded.productResponseDTOList);
+                    
+                    if (response.page) {
+                        setPageInfo({
+                            currentPage: response.page.number,
+                            totalPages: response.page.totalPages,
+                            pageSize: response.page.size
+                        });
+                    }
+                } else {
+                    console.warn('Formato de resposta não reconhecido ou lista vazia:', response);
+                    setProducts([]);
+                }
             }
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
@@ -69,10 +77,7 @@ const AdminPage: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [pageInfo.currentPage, pageInfo.pageSize]);
-
-    useEffect(() => {
-    }, [token]);
+    }, [pageInfo.currentPage, pageInfo.pageSize, selectedCategory]);
 
     useEffect(() => {
         if (!isAuthLoading && token) {
@@ -94,7 +99,6 @@ const AdminPage: React.FC = () => {
         return (
             <AdminLogin
                 onLoginSuccess={(newToken) => {
-                    // Armazena o token em um cookie com expiração de 3 horas (3/24 = 0.125 dias)
                     Cookies.set("jwtToken", newToken, { expires: 0.125, path: "/admin" });
                     setToken(newToken);
                 }}
@@ -116,6 +120,12 @@ const AdminPage: React.FC = () => {
             pageSize: Number(target.value),
             currentPage: 0
         }));
+    };
+
+    const handleCategoryChange = (event: React.ChangeEvent<any>) => {
+        const target = event.target as HTMLSelectElement;
+        setSelectedCategory(target.value);
+        setPageInfo(prev => ({ ...prev, currentPage: 0 }));
     };
 
     const openAddModal = () => {
@@ -222,15 +232,25 @@ const AdminPage: React.FC = () => {
                         onClear={clearFeedback}
                     />
 
-                    <Form.Group controlId="pageSizeSelect" className="mb-4">
-                        <Form.Label>Itens por página:</Form.Label>
-                        <Form.Control as="select" value={pageInfo.pageSize} onChange={handlePageSizeChange}>
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
-                        </Form.Control>
-                    </Form.Group>
+                    <Row className="mb-4">
+                        <Col md={6}>
+                            <Form.Group controlId="pageSizeSelect">
+                                <Form.Label>Itens por página:</Form.Label>
+                                <Form.Control as="select" value={pageInfo.pageSize} onChange={handlePageSizeChange}>
+                                    <option value={5}>5</option>
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={50}>50</option>
+                                </Form.Control>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <CategoryFilter
+                                selectedCategory={selectedCategory}
+                                onCategoryChange={handleCategoryChange}
+                            />
+                        </Col>
+                    </Row>
 
                     {loading ? (
                         <div className="text-center py-4">
