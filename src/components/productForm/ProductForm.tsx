@@ -125,12 +125,21 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <Form.Group className="mb-3">
                 <Form.Label>Categoria *</Form.Label>
                 <Form.Control
-                    type="text"
+                    as="select"
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
                     isInvalid={!!validationErrors.category}
-                />
+                    placeholder="Selecione uma categoria"
+                >
+                    <option value="">Selecione uma categoria</option>
+                    <option value="luvas">Luvas</option>
+                    <option value="caneleiras">Caneleiras</option>
+                    <option value="acessorios">Acessórios</option>
+                    <option value="manoplas/apareadores">Manoplas/Aparadores</option>
+                    <option value="protetores">Protetores</option>
+                    <option value="outros">Outros</option>
+                </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     {validationErrors.category}
                 </Form.Control.Feedback>
