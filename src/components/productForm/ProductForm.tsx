@@ -17,7 +17,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 }) => {
     const [formData, setFormData] = useState<ProductFormData>({
         name: '',
-        description: '',
+        available: true,
         category: '',
         size: '',
         code: '',
@@ -30,7 +30,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         if (initialData) {
             setFormData({
                 name: initialData.name,
-                description: initialData.description,
+                available: initialData.available,
                 category: initialData.category,
                 size: initialData.size,
                 code: initialData.code,
@@ -112,13 +112,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>Descrição</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows={3}
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
+                <Form.Label>Disponivel</Form.Label>
+                <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label="Disponível"
+                    checked={formData.available}
+                    onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        available: e.target.checked
+                    }))}
                 />
             </Form.Group>
 

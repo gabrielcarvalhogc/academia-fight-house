@@ -34,7 +34,7 @@ export const productService = {
             }
 
             formData.append('name', productData.name);
-            formData.append('description', productData.description);
+            formData.append('available', productData.available.toString());
             formData.append('category', productData.category);
             formData.append('size', productData.size);
             formData.append('code', productData.code.toString());
@@ -65,7 +65,7 @@ export const productService = {
             }
 
             formData.append('name', productData.name);
-            formData.append('description', productData.description);
+            formData.append('available', productData.available.toString());
             formData.append('category', productData.category);
             formData.append('size', productData.size);
             formData.append('code', productData.code.toString());

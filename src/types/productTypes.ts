@@ -1,7 +1,7 @@
 export interface Product {
     id: string;
     name: string;
-    description: string;
+    available: boolean;
     category: string;
     size: string;
     code: number;
@@ -10,7 +10,7 @@ export interface Product {
 
 export interface ProductFormData {
     name: string;
-    description: string;
+    available: boolean;
     category: string;
     size: string;
     code: number | string;
