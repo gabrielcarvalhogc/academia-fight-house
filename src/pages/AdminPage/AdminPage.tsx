@@ -12,6 +12,7 @@ import ProductModal from '../../components/productModal/ProductModal.tsx';
 import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageComponent.tsx';
 import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
 import { FeedbackMessage } from '../../types/feedback.ts';
+import DeleteConfirmationModal from '../../components/deleteConfirmationModal/DeleteConfirmationModal'; // Importe o modal criado
 
 const AdminPage: React.FC = () => {
     const { token, setToken, isLoading: isAuthLoading } = useAuth();
@@ -34,6 +35,7 @@ const AdminPage: React.FC = () => {
         message: '',
         type: ''
     });
+    const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
     const fetchProducts = useCallback(async () => {
         try {
@@ -51,10 +53,10 @@ const AdminPage: React.FC = () => {
                     pageInfo.currentPage,
                     pageInfo.pageSize
                 );
-                
+
                 if (response && response._embedded && response._embedded.productResponseDTOList) {
                     setProducts(response._embedded.productResponseDTOList);
-                    
+
                     if (response.page) {
                         setPageInfo({
                             currentPage: response.page.number,
@@ -182,10 +184,15 @@ const AdminPage: React.FC = () => {
         }
     };
 
-    const handleDeleteProduct = async (id: string) => {
-        if (window.confirm('Tem certeza que deseja excluir este produto?')) {
+    const handleDeleteClick = (productId: string) => {
+        const product = products.find(p => p.id === productId) || null;
+        setProductToDelete(product);
+    };
+
+    const confirmDeleteProduct = async () => {
+        if (productToDelete) {
             try {
-                await productService.deleteProduct(id);
+                await productService.deleteProduct(productToDelete.id);
                 setFeedback({
                     message: 'Produto excluído com sucesso!',
                     type: 'success'
@@ -196,6 +203,8 @@ const AdminPage: React.FC = () => {
                     message: 'Erro ao excluir produto. Por favor, tente novamente.',
                     type: 'danger'
                 });
+            } finally {
+                setProductToDelete(null);
             }
         }
     };
@@ -261,7 +270,7 @@ const AdminPage: React.FC = () => {
                         <ProductTable
                             products={products}
                             onEdit={openEditModal}
-                            onDelete={handleDeleteProduct}
+                            onDelete={handleDeleteClick}
                             loading={false}
                         />
                     ) : (
@@ -284,6 +293,13 @@ const AdminPage: React.FC = () => {
                 product={selectedProduct}
                 isEditing={isEditing}
                 onSubmit={handleSubmitProduct}
+            />
+
+            <DeleteConfirmationModal
+                show={!!productToDelete}
+                productName={productToDelete?.name}
+                onConfirm={confirmDeleteProduct}
+                onCancel={() => setProductToDelete(null)}
             />
         </Container>
     );
