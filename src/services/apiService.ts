@@ -1,10 +1,6 @@
 /// <reference types="vite/client" />
-
+import Cookies from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-
-interface ImportMetaEnv {
-    readonly VITE_API_URL: string;
-}
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL as string,
@@ -14,13 +10,15 @@ const apiClient: AxiosInstance = axios.create({
     },
 });
 
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        console.error('API Error:', error);
-        return Promise.reject(error);
+apiClient.interceptors.request.use((config) => {
+    const token = Cookies.get("jwtToken");
+    if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
     }
-);
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 export const apiService = {
     get: <T>(url: string, config?: AxiosRequestConfig) =>
