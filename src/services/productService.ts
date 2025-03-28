@@ -37,6 +37,20 @@ export const productService = {
     },
 
     /**
+     * Busca produtos filtrados por nome.
+     * Utiliza endpoint com PathVariable: /products/name/{name}
+     * @param name Nome (ou parte dele) a ser buscado
+     * @returns Lista de produtos que correspondem ao nome
+     */
+    getProductsByName: async (name: string): Promise<Product[]> => {
+        try {
+            return await apiService.get<Product[]>(`${PRODUCT_GET_ENDPOINT}/name/${name}`);
+        } catch (error) {
+            console.error('Erro ao buscar produtos por nome:', error);
+            throw error;
+        }
+    },
+    /**
      * Cria um novo produto
      * @param productData Dados do produto a ser criado
      * @returns O produto criado

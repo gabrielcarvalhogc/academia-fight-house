@@ -1,85 +1,41 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import AdminLogin from '../../components/adminLogin/AdminLogin';
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Button, Card, Form, Spinner } from 'react-bootstrap';
 import Cookies from 'js-cookie';
-import Spinner from 'react-bootstrap/esm/Spinner';
-import { useAuth } from '../../hooks/useAuth.ts';
-import { Product, ProductFormData } from '../../types/productTypes.ts';
-import productService from '../../services/productService.ts';
-import ProductTable from '../../components/productTable/productTable.tsx';
-import CustomPagination from '../../components/pagination/CustonPagination.tsx';
-import ProductModal from '../../components/productModal/ProductModal.tsx';
-import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageComponent.tsx';
+
+import AdminLogin from '../../components/adminLogin/AdminLogin';
+import ProductTable from '../../components/productTable/productTable';
+import CustomPagination from '../../components/pagination/CustonPagination';
+import ProductModal from '../../components/productModal/ProductModal';
+import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageComponent';
 import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
-import { FeedbackMessage } from '../../types/feedback.ts';
-import DeleteConfirmationModal from '../../components/deleteConfirmationModal/DeleteConfirmationModal'; // Importe o modal criado
+import DeleteConfirmationModal from '../../components/deleteConfirmationModal/DeleteConfirmationModal';
+import SearchInput from '../../components/searchInput/SearchInput';
+
+import { useAuth } from '../../hooks/useAuth';
+import { useAdminProducts } from '../../hooks/useAdminProducts';
 
 const AdminPage: React.FC = () => {
     const { token, setToken, isLoading: isAuthLoading } = useAuth();
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [pageInfo, setPageInfo] = useState<{
-        currentPage: number;
-        totalPages: number;
-        pageSize: number;
-    }>({
-        currentPage: 0,
-        totalPages: 1,
-        pageSize: 10
-    });
     const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
+    const {
+        products,
+        loading,
+        pageInfo,
+        feedback,
+        fetchProducts,
+        createProduct,
+        updateProduct,
+        deleteProduct,
+        setPageInfo,
+        setFeedback,
+    } = useAdminProducts(selectedCategory, searchTerm);
+
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined);
+    const [selectedProduct, setSelectedProduct] = useState<any>(undefined);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [feedback, setFeedback] = useState<FeedbackMessage>({
-        message: '',
-        type: ''
-    });
-    const [productToDelete, setProductToDelete] = useState<Product | null>(null);
-
-    const fetchProducts = useCallback(async () => {
-        try {
-            setLoading(true);
-            if (selectedCategory) {
-                const filteredProducts = await productService.getProductsByCategory(selectedCategory);
-                setProducts(filteredProducts);
-                setPageInfo({
-                    currentPage: 0,
-                    totalPages: 1,
-                    pageSize: filteredProducts.length || 10
-                });
-            } else {
-                const response = await productService.getProducts(
-                    pageInfo.currentPage,
-                    pageInfo.pageSize
-                );
-
-                if (response && response._embedded && response._embedded.productResponseDTOList) {
-                    setProducts(response._embedded.productResponseDTOList);
-
-                    if (response.page) {
-                        setPageInfo({
-                            currentPage: response.page.number,
-                            totalPages: response.page.totalPages,
-                            pageSize: response.page.size
-                        });
-                    }
-                } else {
-                    console.warn('Formato de resposta não reconhecido ou lista vazia:', response);
-                    setProducts([]);
-                }
-            }
-        } catch (error) {
-            console.error('Erro ao carregar produtos:', error);
-            setFeedback({
-                message: 'Não foi possível carregar os produtos. Por favor, tente novamente.',
-                type: 'danger'
-            });
-            setProducts([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [pageInfo.currentPage, pageInfo.pageSize, selectedCategory]);
+    const [productToDelete, setProductToDelete] = useState<any>(null);
 
     useEffect(() => {
         if (!isAuthLoading && token) {
@@ -101,7 +57,7 @@ const AdminPage: React.FC = () => {
         return (
             <AdminLogin
                 onLoginSuccess={(newToken) => {
-                    Cookies.set("jwtToken", newToken, { expires: 0.125, path: "/admin" });
+                    Cookies.set('jwtToken', newToken, { expires: 0.125, path: '/admin' });
                     setToken(newToken);
                 }}
             />
@@ -109,155 +65,95 @@ const AdminPage: React.FC = () => {
     }
 
     const handlePageChange = (page: number) => {
-        setPageInfo(prev => ({
+        setPageInfo((prev) => ({ ...prev, currentPage: page }));
+    };
+
+    const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPageInfo((prev) => ({
             ...prev,
-            currentPage: page
+            pageSize: Number(event.target.value),
+            currentPage: 0,
         }));
     };
 
-    const handlePageSizeChange = (event: React.ChangeEvent<any>) => {
-        const target = event.target as HTMLSelectElement;
-        setPageInfo(prev => ({
-            ...prev,
-            pageSize: Number(target.value),
-            currentPage: 0
-        }));
+    const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategory(event.target.value);
+        setPageInfo((prev) => ({ ...prev, currentPage: 0 }));
     };
 
-    const handleCategoryChange = (event: React.ChangeEvent<any>) => {
-        const target = event.target as HTMLSelectElement;
-        setSelectedCategory(target.value);
-        setPageInfo(prev => ({ ...prev, currentPage: 0 }));
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+        setPageInfo((prev) => ({ ...prev, currentPage: 0 }));
     };
 
-    const openAddModal = () => {
-        setSelectedProduct(undefined);
-        setIsEditing(false);
-        setModalVisible(true);
-    };
-
-    const openEditModal = (product: Product) => {
+    const openModal = (product?: any) => {
         setSelectedProduct(product);
-        setIsEditing(true);
+        setIsEditing(!!product);
         setModalVisible(true);
     };
 
-    const closeModal = () => {
-        setModalVisible(false);
-    };
+    const closeModal = () => setModalVisible(false);
 
-    const handleCreateProduct = async (formData: ProductFormData) => {
-        try {
-            await productService.createProduct(formData);
-            setFeedback({
-                message: 'Produto criado com sucesso!',
-                type: 'success'
-            });
-            fetchProducts();
-            closeModal();
-        } catch (error) {
-            setFeedback({
-                message: 'Erro ao criar produto. Por favor, tente novamente.',
-                type: 'danger'
-            });
-            throw error;
+    const handleSubmitProduct = async (formData: any) => {
+        if (isEditing && selectedProduct) {
+            await updateProduct(selectedProduct.id, formData);
+        } else {
+            await createProduct(formData);
         }
-    };
-
-    const handleUpdateProduct = async (formData: ProductFormData) => {
-        if (!selectedProduct) return;
-
-        try {
-            await productService.updateProduct(selectedProduct.id, formData);
-            setFeedback({
-                message: 'Produto atualizado com sucesso!',
-                type: 'success'
-            });
-            fetchProducts();
-            closeModal();
-        } catch (error) {
-            setFeedback({
-                message: 'Erro ao atualizar produto. Por favor, tente novamente.',
-                type: 'danger'
-            });
-            throw error;
-        }
+        closeModal();
     };
 
     const handleDeleteClick = (productId: string) => {
-        const product = products.find(p => p.id === productId) || null;
+        const product = products.find((p: any) => p.id === productId) || null;
         setProductToDelete(product);
     };
 
     const confirmDeleteProduct = async () => {
         if (productToDelete) {
-            try {
-                await productService.deleteProduct(productToDelete.id);
-                setFeedback({
-                    message: 'Produto excluído com sucesso!',
-                    type: 'success'
-                });
-                fetchProducts();
-            } catch (error) {
-                setFeedback({
-                    message: 'Erro ao excluir produto. Por favor, tente novamente.',
-                    type: 'danger'
-                });
-            } finally {
-                setProductToDelete(null);
-            }
+            await deleteProduct(productToDelete.id);
+            setProductToDelete(null);
         }
     };
 
-    const handleSubmitProduct = async (formData: ProductFormData) => {
-        if (isEditing) {
-            await handleUpdateProduct(formData);
-        } else {
-            await handleCreateProduct(formData);
-        }
-    };
-
-    const clearFeedback = () => {
-        setFeedback({ message: '', type: '' });
-    };
+    const clearFeedback = () => setFeedback({ message: '', type: '' });
 
     return (
         <Container className="py-4">
-            <Card className='w-100'>
+            <Card className="w-100">
                 <Card.Body>
                     <Row className="mb-4 align-items-center">
                         <Col>
                             <h2 className="mb-0">Gerenciamento de Produtos</h2>
                         </Col>
                         <Col xs="auto">
-                            <Button variant="primary" onClick={openAddModal}>
+                            <Button variant="primary" onClick={() => openModal()}>
                                 Adicionar Produto
                             </Button>
                         </Col>
                     </Row>
 
-                    <FeedbackMessageComponent
-                        feedback={feedback}
-                        onClear={clearFeedback}
-                    />
+                    <FeedbackMessageComponent feedback={feedback} onClear={clearFeedback} />
 
                     <Row className="mb-4">
-                        <Col md={6}>
+                        <Col md={4}>
                             <Form.Group controlId="pageSizeSelect">
                                 <Form.Label>Itens por página:</Form.Label>
-                                <Form.Control as="select" value={pageInfo.pageSize} onChange={handlePageSizeChange}>
+                                <Form.Select value={pageInfo.pageSize} onChange={handlePageSizeChange}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={20}>20</option>
                                     <option value={50}>50</option>
-                                </Form.Control>
+                                </Form.Select>
                             </Form.Group>
                         </Col>
-                        <Col md={6}>
+                        <Col md={4}>
                             <CategoryFilter
                                 selectedCategory={selectedCategory}
                                 onCategoryChange={handleCategoryChange}
                             />
+                        </Col>
+                        <Col md={4}>
+                            <SearchInput value={searchTerm} onChange={handleSearchChange} />
                         </Col>
                     </Row>
 
@@ -269,9 +165,9 @@ const AdminPage: React.FC = () => {
                     ) : products && products.length > 0 ? (
                         <ProductTable
                             products={products}
-                            onEdit={openEditModal}
+                            onEdit={openModal}
                             onDelete={handleDeleteClick}
-                            loading={false}
+                            loading={loading}
                         />
                     ) : (
                         <div className="text-center py-4">Nenhum produto encontrado.</div>
