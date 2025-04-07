@@ -152,10 +152,10 @@ const AdminPage: React.FC = () => {
                                 onCategoryChange={handleCategoryChange}
                             />
                         </Col>
-                        <Col md={4}>
-                            <SearchInput value={searchTerm} onChange={handleSearchChange} />
-                        </Col>
                     </Row>
+                    <div className='my-4 w-25'>
+                        <SearchInput value={searchTerm} onChange={handleSearchChange}/>
+                    </div>
 
                     {loading ? (
                         <div className="text-center py-4">

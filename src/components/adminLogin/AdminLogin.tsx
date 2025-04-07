@@ -10,12 +10,13 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const BASE_URL = import.meta.env.VITE_API_URL as string;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
     try {
-      const response = await fetch("http://localhost:8080/admin/login", {
+      const response = await fetch(`${BASE_URL}/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
