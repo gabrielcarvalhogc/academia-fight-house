@@ -5,7 +5,7 @@ export interface Product {
     category: string;
     size: string;
     code: number;
-    imageUrl?: string;
+    imageURL: string;
 }
 
 export interface ProductFormData {

@@ -139,7 +139,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     <option value="luvas">Luvas</option>
                     <option value="caneleiras">Caneleiras</option>
                     <option value="acessorios">Acessórios</option>
-                    <option value="manoplas/apareadores">Manoplas/Aparadores</option>
+                    <option value="manoplas-aparadores">Manoplas-Aparadores</option>
                     <option value="protetores">Protetores</option>
                     <option value="outros">Outros</option>
                 </Form.Control>

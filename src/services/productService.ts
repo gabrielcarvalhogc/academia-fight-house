@@ -14,7 +14,7 @@ export const productService = {
      */
     getProducts: async (page: number = 0, size: number = 10): Promise<HateoasResponse<Product>> => {
         try {
-            return await apiService.get<HateoasResponse<Product>>(`${PRODUCT_ENDPOINT}?page=${page}&size=${size}`);
+            return await apiService.get<HateoasResponse<Product>>(`${PRODUCT_GET_ENDPOINT}/pagination?page=${page}&size=${size}`);
         } catch (error) {
             console.error('Erro ao buscar produtos:', error);
             throw error;
