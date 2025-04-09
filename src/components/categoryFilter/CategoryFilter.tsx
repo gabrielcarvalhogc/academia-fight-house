@@ -1,6 +1,6 @@
-// CategoryFilter.tsx
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { productCategories } from '../../data/product-category';
 
 interface CategoryFilterProps {
     selectedCategory: string;
@@ -13,12 +13,9 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ selectedCategory, onCat
             <Form.Label>Categoria:</Form.Label>
             <Form.Control as="select" value={selectedCategory} onChange={onCategoryChange}>
                 <option value="">Todas</option>
-                <option value="Luvas">Luvas</option>
-                <option value="Caneleiras">Caneleiras</option>
-                <option value="Acessorios">Acessorios</option>
-                <option value="Manoplas-Aparadores">Manoplas-Aparadores</option>
-                <option value="Protetores">Protetores</option>
-                <option value="Outros">Outros</option>
+                {productCategories.map((category, index) => (
+                    <option key={index} value={category.value}>{category.name}</option>
+                ))}
             </Form.Control>
         </Form.Group>
     );

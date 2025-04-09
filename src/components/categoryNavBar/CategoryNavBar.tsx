@@ -1,27 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import { Container, Nav } from "react-bootstrap";
+import { productCategories } from "../../data/product-category";
 
 function CategoryNavBar() {
-    const initialCategories = [
-        { id: 1, name: 'LUVAS', active: false },
-        { id: 2, name: 'CANELEIRAS', active: false },
-        { id: 3, name: 'ACESSÓRIOS', active: false },
-        { id: 4, name: 'MANOPLAS/APARADORES', active: false },
-        { id: 5, name: 'PROTETORES', active: false },
-        { id: 6, name: 'OUTROS', active: false },
-    ];
 
-    const [categories, setCategories] = useState(initialCategories);
+    const [isActive, setIsActive] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1);
 
     const handleCategoryClick = (categoryId: number) => {
-        const updatedCategories = categories.map(category => ({
-            ...category,
-            active: category.id === categoryId
-        }));
-
-        setCategories(updatedCategories);
+        setIsActive(true);
+        setActiveIndex(categoryId);
     };
+
     return (
         <div>
             <div
@@ -43,20 +34,19 @@ function CategoryNavBar() {
                         }}
                     >
                         <Nav className="flex-nowrap justify-content-evenly" style={{ minWidth: '100%', }}>
-                            {categories.map((category) => (
-                                <Nav.Item key={category.id}>
+                            {productCategories.map((category, index) => (
+                                <Nav.Item key={index}>
                                     <Nav.Link
-                                        href={`#${category.name.toLowerCase()}`}
+                                        href={`#${category.value}`}
                                         onClick={(e) => {
-                                            e.preventDefault();
-                                            handleCategoryClick(category.id);
+                                            handleCategoryClick(index);
                                         }}
                                         style={{
                                             padding: '12px 20px',
                                             fontWeight: 'bold',
                                             fontSize: '16px',
-                                            color: category.active ? '#000' : '#666',
-                                            borderBottom: category.active ? '3px solid #FFD700' : 'none',
+                                            color: isActive && activeIndex === index ? '#000' : '#666',
+                                            borderBottom: isActive && activeIndex === index ? '3px solid #FFD700' : 'none',
                                             whiteSpace: 'nowrap',
                                             transition: 'all 0.2s ease-in-out'
                                         }}

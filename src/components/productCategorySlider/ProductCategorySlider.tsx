@@ -32,7 +32,7 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
 
         fetchProducts();
     }, [category]);
-
+    
     if (loading) {
         return <div className="text-center py-5">Carregando produtos...</div>;
     }
@@ -50,12 +50,12 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
 
     return (
         <Container fluid className="my-4 px-3">
-            <h2 className="text-uppercase mb-4"  style={{ fontFamily: "var(--font-title)" }}>{title || category}</h2>
+            <h2 className="text-uppercase mb-4" id={category} style={{ fontFamily: "var(--font-title)" }}>{title || category}</h2>
 
             <div className="position-relative">
                 <div
                     ref={sliderRef}
-                    className="d-flex overflow-auto pb-3 gap-5"
+                    className="d-flex overflow-auto py-2 gap-4"
                     style={{
                         scrollSnapType: 'x mandatory',
                         scrollbarWidth: 'none',
@@ -68,8 +68,6 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
                             className="flex-shrink-0"
                             style={{
                                 scrollSnapAlign: 'start',
-                                width: '18rem',
-                                minWidth: '280px'
                             }}
                         >
                             <ProductCardWrapper product={product} />

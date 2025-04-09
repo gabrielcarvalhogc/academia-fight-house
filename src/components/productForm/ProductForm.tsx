@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Product, ProductFormData } from '../../types/productTypes';
+import { productCategories } from '../../data/product-category';
 
 interface ProductFormProps {
     initialData?: Product;
@@ -136,12 +137,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     placeholder="Selecione uma categoria"
                 >
                     <option value="">Selecione uma categoria</option>
-                    <option value="luvas">Luvas</option>
-                    <option value="caneleiras">Caneleiras</option>
-                    <option value="acessorios">Acessórios</option>
-                    <option value="manoplas-aparadores">Manoplas-Aparadores</option>
-                    <option value="protetores">Protetores</option>
-                    <option value="outros">Outros</option>
+                    {productCategories.map((category, index) => (
+                        <option key={index} value={category.value}>{category.name}</option>
+                    ))}
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     {validationErrors.category}
