@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import { productService } from '../../services/productService';
 import ProductCard from '../../components/productCard/ProductCard';
 import { Product } from '../../types/productTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface CategorySliderProps {
     category: string;
@@ -14,62 +15,48 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
-    // Fetch products by category
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
                 const categoryProducts = await productService.getProductsByCategory(category);
                 setProducts(categoryProducts);
-                setLoading(false);
             } catch (err) {
                 setError('Erro ao carregar produtos');
-                setLoading(false);
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchProducts();
     }, [category]);
-    
-    if (loading) {
-        return <div className="text-center py-5">Carregando produtos...</div>;
-    }
 
-    if (error) {
-        return <div className="text-center py-5 text-danger">{error}</div>;
-    }
+    if (loading) return <div className="text-center py-5">Carregando produtos...</div>;
+    if (error) return <div className="text-center py-5 text-danger">{error}</div>;
 
-    if (products.length === 0) {
-        return <div className="text-center py-3">Nenhum produto encontrado nesta categoria.</div>;
-    }
-
-    // Display only first 5 products
     const displayProducts = products.slice(0, 5);
 
     return (
         <Container fluid className="my-4 px-3">
-            <h2 className="text-uppercase mb-4" id={category} style={{ fontFamily: "var(--font-title)" }}>{title || category}</h2>
-
+            <div className='d-flex justify-content-between align-items-center mb-4' style={{ maxWidth: '1100px' }}>
+                <h2 className="text-uppercase" id={category} style={{ fontFamily: 'var(--font-title)' }}>
+                    {category || title}
+                </h2>
+                <Button variant="dark" onClick={() => navigate(`/${category}`)}>
+                    Ver todos
+                </Button>
+            </div>
             <div className="position-relative">
                 <div
                     ref={sliderRef}
                     className="d-flex overflow-auto py-2 gap-4"
-                    style={{
-                        scrollSnapType: 'x mandatory',
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none'
-                    }}
+                    style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    {displayProducts.map((product) => (
-                        <div
-                            key={product.id}
-                            className="flex-shrink-0"
-                            style={{
-                                scrollSnapAlign: 'start',
-                            }}
-                        >
+                    {displayProducts.map(product => (
+                        <div key={product.id} className="flex-shrink-0" style={{ scrollSnapAlign: 'start' }}>
                             <ProductCardWrapper product={product} />
                         </div>
                     ))}
@@ -79,17 +66,13 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
     );
 };
 
-// Wrapper for your ProductCard that passes the proper props
-const ProductCardWrapper: React.FC<{ product: Product }> = ({ product }) => {
-    // This component adapts your existing ProductCard to work with the data structure
-    return (
-        <ProductCard
-            imageSrc={product.imageURL}
-            title={product.name}
-            size={product.size || ''}
-            code={`Cód. ${product.code}`}
-        />
-    );
-};
+const ProductCardWrapper: React.FC<{ product: Product }> = ({ product }) => (
+    <ProductCard
+        imageSrc={product.imageURL}
+        title={product.name}
+        size={product.size || ''}
+        code={`Cód. ${product.code}`}
+    />
+);
 
 export default CategoryProductSlider;
