@@ -1,57 +1,113 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import ProductPageHeader from "../../components/productPageHeader/ProductPageHeader";
 import CategoryNavBar from "../../components/categoryNavBar/CategoryNavBar";
 import productService from "../../services/productService";
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import CategoryProductSlider from "../../components/productCategorySlider/ProductCategorySlider";
+import { Product } from "../../types/productTypes";
+import ProductCard from "../../components/productCard/ProductCard";
 
 function ProductPage() {
+    const [categories, setCategories] = useState<string[]>([]);
+    const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
+    const [errorSearch, setErrorSearch] = useState<string | null>(null);
 
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+    useEffect(() => {
+        const loadCategories = async () => {
+            try {
+                const response = await productService.getProducts(0, 100);
+                const uniqueCategories = [...new Set(
+                    response._embedded?.productResponseDTOList?.map(p => p.category) || []
+                )];
+                setCategories(uniqueCategories);
+            } catch (err) {
+                console.error('Falha ao carregar categorias:', err);
+            } finally {
+                setLoadingCategories(false);
+            }
+        };
 
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        // This is a simplified example. You might need to implement 
-        // a specific endpoint that returns all categories
-        const products = await productService.getProducts(0, 100);
+        loadCategories();
+    }, []);
 
-        // Extract unique categories from products
-        const uniqueCategories = [...new Set(
-          products._embedded?.productResponseDTOList?.map(product => product.category) || []
-        )];
-        setCategories(uniqueCategories);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to load categories:', error);
-        setLoading(false);
-      }
+    const handleSearch = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!searchTerm.trim()) return;
+
+        setLoadingSearch(true);
+        setErrorSearch(null);
+
+        try {
+            const results = await productService.getProductsByName(searchTerm);
+            setProducts(results);
+        } catch (err) {
+            console.error('Erro ao buscar produtos:', err);
+            setErrorSearch('Não foi possível buscar os produtos. Tente novamente.');
+        } finally {
+            setLoadingSearch(false);
+        }
     };
 
-    loadCategories();
-  }, []);
-  if (loading) {
-    return <Container className="py-5 text-center">Carregando categorias de produtos...</Container>;
-  }
-  return (
-    <>
-      <ProductPageHeader />
-      <main className="" style={{ backgroundColor: "#F5F5F5" }}>
-        <CategoryNavBar />
-        <h1 className="text-center fw-bold py-4" style={{ fontFamily: "var(--font-title)" }}>PRODUTOS PULSER</h1>
-        <Container fluid className="py-4">
-          {categories.map(category => (
-            <CategoryProductSlider
-              key={category}
-              category={category}
-              title={category.toUpperCase()}
+    return (
+        <>
+            <ProductPageHeader
+                searchTerm={searchTerm}
+                onSearchTermChange={setSearchTerm}
+                onSearchSubmit={handleSearch}
+                loading={loadingSearch}
             />
-          ))}
-        </Container>
-      </main>
-    </>
-  );
+
+            <main style={{ backgroundColor: '#F5F5F5' }}>
+                <CategoryNavBar />
+                <h1 className='text-center fw-bold py-4' style={{ fontFamily: 'var(--font-title)' }}>
+                    PRODUTOS PULSER
+                </h1>
+
+                <Container fluid className='py-4'>
+                    {errorSearch && <Alert variant='danger'>{errorSearch}</Alert>}
+
+                    {loadingSearch && (
+                        <div className='text-center py-5'>
+                            <h4 className='text-center'>Buscando produtos...</h4>
+                        </div>
+                    )}
+
+                    {searchTerm && products.length === 0 && !loadingSearch && (
+                        <p className='ps-4 py-5 fs-4'>Nenhum produto encontrado.</p>
+                    )}
+
+                    {products.length > 0 && (
+                        <div className='mb-4'>
+                            <h5 className='fs-2 py-4' style={{ fontFamily: 'var(--font-title)'}}>Resultados da busca:</h5>
+                            <div className='d-flex overflow-auto gap-4 py-2'>
+                                {products.map((product, idx) => (
+                                    <div key={idx} className='' style={{ minWidth: '200px' }}>
+                                        <ProductCard
+                                            imageSrc={product.imageURL}
+                                            title={product.name}
+                                            size={product.size}
+                                            code={product.code.toString()}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {!loadingCategories && categories.map(cat => (
+                        <CategoryProductSlider
+                            key={cat}
+                            category={cat}
+                            title={cat.toUpperCase()}
+                        />
+                    ))}
+                </Container>
+            </main>
+        </>
+    );
 }
 
 export default ProductPage;
