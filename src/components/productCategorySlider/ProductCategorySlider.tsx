@@ -71,7 +71,8 @@ const ProductCardWrapper: React.FC<{ product: Product }> = ({ product }) => (
         imageSrc={product.imageURL}
         title={product.name}
         size={product.size || ''}
-        code={`Cód. ${product.code}`}
+        code={`Cód. ${product.code}`} 
+        available={product.available}    
     />
 );
 

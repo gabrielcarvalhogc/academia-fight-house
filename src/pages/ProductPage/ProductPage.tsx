@@ -90,6 +90,7 @@ function ProductPage() {
                                             title={product.name}
                                             size={product.size}
                                             code={product.code.toString()}
+                                            available={product.available}
                                         />
                                     </div>
                                 ))}
