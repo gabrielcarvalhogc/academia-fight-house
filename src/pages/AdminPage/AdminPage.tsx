@@ -10,9 +10,13 @@ import FeedbackMessageComponent from '../../components/feedback/FeedbackMessageC
 import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
 import DeleteConfirmationModal from '../../components/deleteConfirmationModal/DeleteConfirmationModal';
 import SearchInput from '../../components/searchInput/SearchInput';
-
+import BlogModal from '../../components/blogModal/BlogModal';
 import { useAuth } from '../../hooks/useAuth';
 import { useAdminProducts } from '../../hooks/useAdminProducts';
+import BlogTable from '../../components/blogTable/BlogTable';
+import newsService from '../../services/newsService';
+import { NewsFormData } from '../../types/newsType';
+import { News } from '../../types/newsType';
 
 const AdminPage: React.FC = () => {
     const { token, setToken, isLoading: isAuthLoading } = useAuth();
@@ -37,11 +41,29 @@ const AdminPage: React.FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [productToDelete, setProductToDelete] = useState<any>(null);
 
+    // Estado e lógica para notícias
+    const [newsList, setNewsList] = useState<News[]>([]);
+    const [newsLoading, setNewsLoading] = useState<boolean>(false);
+    const [blogModalVisible, setBlogModalVisible] = useState<boolean>(false);
+
     useEffect(() => {
         if (!isAuthLoading && token) {
             fetchProducts();
+            loadNews();
         }
     }, [token, isAuthLoading, fetchProducts]);
+
+    const loadNews = async () => {
+        try {
+            setNewsLoading(true);
+            const allNews = await newsService.getAll();
+            setNewsList(allNews);
+        } catch (error) {
+            console.error('Erro ao carregar notícias', error);
+        } finally {
+            setNewsLoading(false);
+        }
+    };
 
     if (isAuthLoading) {
         return (
@@ -117,6 +139,19 @@ const AdminPage: React.FC = () => {
 
     const clearFeedback = () => setFeedback({ message: '', type: '' });
 
+    // Notícia handlers
+    const openBlogModal = () => setBlogModalVisible(true);
+    const closeBlogModal = () => setBlogModalVisible(false);
+    const handleSubmitNews = async (formData: NewsFormData) => {
+        try {
+            await newsService.create(formData);
+            await loadNews();
+            closeBlogModal();
+        } catch (error) {
+            console.error('Erro ao criar notícia', error);
+        }
+    };
+
     return (
         <Container className="py-4">
             <Card className="w-100">
@@ -154,7 +189,7 @@ const AdminPage: React.FC = () => {
                         </Col>
                     </Row>
                     <div className='my-4 w-25'>
-                        <SearchInput value={searchTerm} onChange={handleSearchChange}/>
+                        <SearchInput value={searchTerm} onChange={handleSearchChange} />
                     </div>
 
                     {loading ? (
@@ -183,6 +218,56 @@ const AdminPage: React.FC = () => {
                 </Card.Body>
             </Card>
 
+            <Card className='w-100 my-5 bg-secondary-subtle'>
+                <Card.Body>
+                    <Row className="mb-4 align-items-center">
+                        <Col>
+                            <h2 className="mb-0">Blog</h2>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="secondary" onClick={openBlogModal}>
+                                Adicionar notícia
+                            </Button>
+                        </Col>
+                    </Row>
+
+                    <div className="mb-4">
+                        <Form.Group controlId="pageSizeSelectBlog" className="w-25">
+                            <Form.Label>Itens por página:</Form.Label>
+                            <Form.Select value={pageInfo.pageSize} onChange={handlePageSizeChange}>
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </div>
+
+                    {newsLoading ? (
+                        <div className="text-center py-4">
+                            <Spinner animation="border" size="sm" className="me-2" />
+                            Carregando notícias...
+                        </div>
+                    ) : newsList.length > 0 ? (
+                        <BlogTable 
+                            news={newsList} 
+                            onEdit={(newsItem) => console.log('Edit news:', newsItem)} 
+                            onDelete={(newsItem) => console.log('Delete news:', newsItem)} 
+                        />
+                    ) : (
+                        <div className="text-center py-4">Nenhuma notícia encontrada.</div>
+                    )}
+
+                    {!newsLoading && newsList.length > 0 && (
+                        <CustomPagination
+                            currentPage={pageInfo.currentPage}
+                            totalPages={pageInfo.totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
+                </Card.Body>
+            </Card>
+
             <ProductModal
                 show={modalVisible}
                 onHide={closeModal}
@@ -196,6 +281,12 @@ const AdminPage: React.FC = () => {
                 productName={productToDelete?.name}
                 onConfirm={confirmDeleteProduct}
                 onCancel={() => setProductToDelete(null)}
+            />
+
+            <BlogModal
+                show={blogModalVisible}
+                onHide={closeBlogModal}
+                onSubmit={handleSubmitNews}
             />
         </Container>
     );
