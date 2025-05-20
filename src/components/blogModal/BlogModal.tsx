@@ -59,7 +59,13 @@ const BlogModal: React.FC<BlogModalProps> = ({
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        onSubmit(formData);
+        // conserta formato de yyyy-mm-dd → dd/mm/yyyy
+        const { date, ...rest } = formData;
+        const formattedDate = date
+            ? date.split('-').reverse().join('/')
+            : '';
+
+        onSubmit({ ...rest, date: formattedDate });
     };
 
     return (
@@ -114,7 +120,7 @@ const BlogModal: React.FC<BlogModalProps> = ({
                             <Form.Group controlId="newsDate">
                                 <Form.Label>Data</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="date"
                                     name="date"
                                     placeholder="dd/mm/aaaa"
                                     value={formData.date}
