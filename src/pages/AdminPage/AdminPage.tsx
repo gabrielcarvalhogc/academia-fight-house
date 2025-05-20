@@ -13,10 +13,8 @@ import SearchInput from '../../components/searchInput/SearchInput';
 import BlogModal from '../../components/blogModal/BlogModal';
 import { useAuth } from '../../hooks/useAuth';
 import { useAdminProducts } from '../../hooks/useAdminProducts';
+import { useAdminNews } from '../../hooks/useAdminNews';
 import BlogTable from '../../components/blogTable/BlogTable';
-import newsService from '../../services/newsService';
-import { NewsFormData } from '../../types/newsType';
-import { News } from '../../types/newsType';
 
 const AdminPage: React.FC = () => {
     const { token, setToken, isLoading: isAuthLoading } = useAuth();
@@ -41,37 +39,29 @@ const AdminPage: React.FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [productToDelete, setProductToDelete] = useState<any>(null);
 
-    // Estado e lógica para notícias
-    const [newsList, setNewsList] = useState<News[]>([]);
-    const [newsLoading, setNewsLoading] = useState<boolean>(false);
-    const [blogModalVisible, setBlogModalVisible] = useState<boolean>(false);
-    const [selectedNews, setSelectedNews] = useState<News | undefined>(undefined);
-    const [isEditingNews, setIsEditingNews] = useState<boolean>(false);
-    const [newsToDelete, setNewsToDelete] = useState<News | null>(null);
-    const [newsFeedback, setNewsFeedback] = useState<{message: string, type: "" | "success" | "danger" | "warning" | "info"}>({ message: '', type: '' });
+    const {
+        newsList,
+        loading: newsLoading,
+        feedback: newsFeedback,
+        modalVisible: newsModalVisible,
+        deleteConfirmVisible,
+        selectedNews,
+        isEditing: isEditingNews,
+        toDelete: newsToDelete,
+        openCreate: openNewsCreate,
+        openEdit: openNewsEdit,
+        closeModal: closeNewsModal,
+        handleSubmit: submitNews,
+        openDeleteConfirm: openNewsDeleteConfirm,
+        confirmDelete: confirmNewsDelete,
+        clearFeedback: clearNewsFeedback,
+    } = useAdminNews();
 
     useEffect(() => {
         if (!isAuthLoading && token) {
             fetchProducts();
-            loadNews();
         }
     }, [token, isAuthLoading, fetchProducts]);
-
-    const loadNews = async () => {
-        try {
-            setNewsLoading(true);
-            const allNews = await newsService.getAll();
-            setNewsList(allNews);
-        } catch (error) {
-            console.error('Erro ao carregar notícias', error);
-            setNewsFeedback({
-                message: 'Erro ao carregar notícias. Tente novamente mais tarde.',
-                type: 'danger'
-            });
-        } finally {
-            setNewsLoading(false);
-        }
-    };
 
     if (isAuthLoading) {
         return (
@@ -146,74 +136,6 @@ const AdminPage: React.FC = () => {
     };
 
     const clearFeedback = () => setFeedback({ message: '', type: '' });
-    const clearNewsFeedback = () => setNewsFeedback({ message: '', type: '' });
-
-    // Notícia handlers
-    const openBlogModal = (newsItem?: News) => {
-        setSelectedNews(newsItem);
-        setIsEditingNews(!!newsItem);
-        setBlogModalVisible(true);
-    };
-
-    const closeBlogModal = () => {
-        setBlogModalVisible(false);
-        setSelectedNews(undefined);
-        setIsEditingNews(false);
-    };
-
-    const handleSubmitNews = async (formData: NewsFormData) => {
-        try {
-            if (isEditingNews && selectedNews) {
-                await newsService.update(selectedNews.id, formData);
-                setNewsFeedback({
-                    message: 'Notícia atualizada com sucesso!',
-                    type: 'success'
-                });
-            } else {
-                await newsService.create(formData);
-                setNewsFeedback({
-                    message: 'Notícia criada com sucesso!',
-                    type: 'success'
-                });
-            }
-            await loadNews();
-            closeBlogModal();
-        } catch (error) {
-            console.error('Erro ao processar notícia', error);
-            setNewsFeedback({
-                message: isEditingNews 
-                    ? 'Erro ao atualizar notícia. Tente novamente mais tarde.' 
-                    : 'Erro ao criar notícia. Tente novamente mais tarde.',
-                type: 'danger'
-            });
-        }
-    };
-
-    const handleDeleteNewsClick = (newsItem: News) => {
-        setNewsToDelete(newsItem);
-    };
-
-    const confirmDeleteNews = async () => {
-        if (newsToDelete) {
-            try {
-                await newsService.delete(newsToDelete.id);
-                console.log('Deletar notícia:', newsToDelete.id);
-                setNewsFeedback({
-                    message: 'Notícia excluída com sucesso!',
-                    type: 'success'
-                });
-                await loadNews();
-            } catch (error) {
-                console.error('Erro ao excluir notícia', error);
-                setNewsFeedback({
-                    message: 'Erro ao excluir notícia. Tente novamente mais tarde.',
-                    type: 'danger'
-                });
-            } finally {
-                setNewsToDelete(null);
-            }
-        }
-    };
 
     return (
         <Container className="py-4">
@@ -281,32 +203,18 @@ const AdminPage: React.FC = () => {
                 </Card.Body>
             </Card>
 
-            <Card className='w-100 my-5 bg-secondary-subtle'>
+            <Card className="w-100 my-5 bg-secondary-subtle">
                 <Card.Body>
                     <Row className="mb-4 align-items-center">
-                        <Col>
-                            <h2 className="mb-0">Blog</h2>
-                        </Col>
+                        <Col><h2 className="mb-0">Blog</h2></Col>
                         <Col xs="auto">
-                            <Button variant="secondary" onClick={() => openBlogModal()}>
+                            <Button variant="secondary" onClick={openNewsCreate}>
                                 Adicionar notícia
                             </Button>
                         </Col>
                     </Row>
 
                     <FeedbackMessageComponent feedback={newsFeedback} onClear={clearNewsFeedback} />
-
-                    <div className="mb-4">
-                        <Form.Group controlId="pageSizeSelectBlog" className="w-25">
-                            <Form.Label>Itens por página:</Form.Label>
-                            <Form.Select value={pageInfo.pageSize} onChange={handlePageSizeChange}>
-                                <option value={5}>5</option>
-                                <option value={10}>10</option>
-                                <option value={20}>20</option>
-                                <option value={50}>50</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </div>
 
                     {newsLoading ? (
                         <div className="text-center py-4">
@@ -316,19 +224,11 @@ const AdminPage: React.FC = () => {
                     ) : newsList.length > 0 ? (
                         <BlogTable 
                             news={newsList} 
-                            onEdit={openBlogModal} 
-                            onDelete={handleDeleteNewsClick} 
+                            onEdit={openNewsEdit} 
+                            onDelete={openNewsDeleteConfirm} 
                         />
                     ) : (
                         <div className="text-center py-4">Nenhuma notícia encontrada.</div>
-                    )}
-
-                    {!newsLoading && newsList.length > 0 && (
-                        <CustomPagination
-                            currentPage={pageInfo.currentPage}
-                            totalPages={pageInfo.totalPages}
-                            onPageChange={handlePageChange}
-                        />
                     )}
                 </Card.Body>
             </Card>
@@ -349,18 +249,18 @@ const AdminPage: React.FC = () => {
             />
 
             <BlogModal
-                show={blogModalVisible}
-                onHide={closeBlogModal}
-                onSubmit={handleSubmitNews}
+                show={newsModalVisible}
+                onHide={closeNewsModal}
+                onSubmit={submitNews}
                 newsItem={selectedNews}
                 isEditing={isEditingNews}
             />
 
             <DeleteConfirmationModal
-                show={!!newsToDelete}
+                show={deleteConfirmVisible}
                 productName={newsToDelete?.title || 'notícia'}
-                onConfirm={confirmDeleteNews}
-                onCancel={() => setNewsToDelete(null)}
+                onConfirm={confirmNewsDelete}
+                onCancel={closeNewsModal}
             />
         </Container>
     );
