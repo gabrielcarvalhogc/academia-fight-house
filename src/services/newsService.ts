@@ -61,15 +61,31 @@ export const newsService = {
     },
 
     /**
-     * Atualiza uma notícia existente.
-     * @param id ID da notícia
-     * @param data Dados da notícia (exceto ID)
+     * Atualiza uma notícia existente pelo ID utilizando multipart/form-data.
+     * @param id ID da notícia a ser atualizada
+     * @param data Dados atualizados da notícia
      */
-    update: async (id: number, data: Omit<News, 'id'>): Promise<News> => {
+    update: async (id: number, data: NewsFormData): Promise<News> => {
         try {
+            const formData = new FormData();
+
+            if (data.imageFile) {
+                formData.append('image', data.imageFile);
+            }
+
+            formData.append('title', data.title);
+            formData.append('author', data.author);
+            formData.append('date', data.date);
+            formData.append('content', data.content);
+
             return await apiService.put<News>(
                 `${NEWS_ENDPOINT}/${id}`,
-                data
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
             );
         } catch (error) {
             console.error(`Erro ao atualizar notícia ${id}:`, error);
