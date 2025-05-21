@@ -3,6 +3,12 @@ import newsService from '../services/newsService';
 import { News, NewsFormData } from '../types/newsType';
 
 type Feedback = { message: string; type: '' | 'success' | 'danger' | 'warning' | 'info' };
+export type newsPageInfo = {
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalElements: number;
+};
 
 export function useAdminNews() {
     const [newsList, setNewsList] = useState<News[]>([]);
@@ -13,23 +19,36 @@ export function useAdminNews() {
     const [isEditing, setIsEditing] = useState(false);
     const [toDelete, setToDelete] = useState<News | null>(null);
     const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+    const [newsPageInfo, setNewsPageInfo] = useState<newsPageInfo>({
+        currentPage: 0,
+        pageSize: 10,
+        totalPages: 0,
+        totalElements: 0,
+    });
 
-    const loadAll = useCallback(async () => {
+    const loadPage = useCallback(async () => {
         setLoading(true);
         try {
-            const all = await newsService.getAll();
-            setNewsList(all);
+            const resp = await newsService.getAll(
+                newsPageInfo.currentPage,
+                newsPageInfo.pageSize,
+                'date,desc'
+            );
+            setNewsList(resp.content);
+            setNewsPageInfo(prev => ({
+                ...prev,
+                totalPages: resp.totalPages,
+                totalElements: resp.totalElements,
+            }));
         } catch (error) {
             console.error('Erro ao carregar notícias', error);
             setFeedback({ message: 'Erro ao carregar notícias.', type: 'danger' });
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [newsPageInfo.currentPage, newsPageInfo.pageSize]);
 
-    useEffect(() => {
-        loadAll();
-    }, [loadAll]);
+    useEffect(() => { loadPage(); }, [loadPage]);
 
     const openCreate = () => {
         setSelectedNews(undefined);
@@ -54,7 +73,7 @@ export function useAdminNews() {
                 await newsService.create(data);
                 setFeedback({ message: 'Notícia criada!', type: 'success' });
             }
-            await loadAll();
+            await loadPage();
             closeModal();
         } catch (error) {
             console.error('Erro ao processar notícia', error);
@@ -72,7 +91,7 @@ export function useAdminNews() {
         try {
             await newsService.delete(toDelete.id);
             setFeedback({ message: 'Notícia excluída!', type: 'success' });
-            await loadAll();
+            await loadPage();
         } catch (error) {
             console.error('Erro ao excluir notícia', error);
             setFeedback({ message: 'Erro ao excluir notícia.', type: 'danger' });
@@ -93,6 +112,8 @@ export function useAdminNews() {
         isEditing,
         deleteConfirmVisible,
         toDelete,
+        newsPageInfo,
+        setNewsPageInfo,
         openCreate,
         openEdit,
         closeModal,

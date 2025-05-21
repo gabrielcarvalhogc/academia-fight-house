@@ -1,3 +1,4 @@
+import { newsPaginatedResponse } from '../types/newsPaginetedResponse';
 import { News, NewsFormData } from '../types/newsType';
 import apiService from './apiService';
 
@@ -6,14 +7,28 @@ const NEWS_GET_ENDPOINT = import.meta.env.VITE_GET_NEWS_ENDPOINT as string;
 
 export const newsService = {
     /**
-     * Obtém todas as notícias.
+     * Busca notícias com paginação.
+     * @param page índice da página (0-based). Default = 0
+     * @param size quantos itens por página. Default = 10
+     * @param sort string de ordenação, ex: "date,desc". Default = "date,desc"
      */
-    getAll: async (): Promise<News[]> => {
+    getAll: async (
+        page = 0,
+        size = 10,
+        sort = 'date,desc'
+    ): Promise<newsPaginatedResponse<News>> => {
         try {
-            return await apiService.get<News[]>(`${NEWS_GET_ENDPOINT}`);
+            const response = await apiService.get<newsPaginatedResponse<News>>(
+                NEWS_GET_ENDPOINT,
+                {
+                    params: { page, size, sort }
+                }
+            )
+            console.log('Notícias paginadas:', response)
+            return response
         } catch (error) {
-            console.error('Erro ao buscar todas as notícias:', error);
-            throw error;
+            console.error('Erro ao buscar notícias paginadas:', error)
+            throw error
         }
     },
 

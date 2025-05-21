@@ -55,6 +55,8 @@ const AdminPage: React.FC = () => {
         openDeleteConfirm: openNewsDeleteConfirm,
         confirmDelete: confirmNewsDelete,
         clearFeedback: clearNewsFeedback,
+        newsPageInfo,
+        setNewsPageInfo,
     } = useAdminNews();
 
     useEffect(() => {
@@ -133,6 +135,13 @@ const AdminPage: React.FC = () => {
             await deleteProduct(productToDelete.id);
             setProductToDelete(null);
         }
+    };
+
+    const handleNewsPageChange = (newPage: number) => {
+        setNewsPageInfo(prev => ({ ...prev, currentPage: newPage }));
+    };
+    const handleNewsPageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setNewsPageInfo(prev => ({ ...prev, pageSize: Number(e.target.value), currentPage: 0 }));
     };
 
     const clearFeedback = () => setFeedback({ message: '', type: '' });
@@ -216,17 +225,40 @@ const AdminPage: React.FC = () => {
 
                     <FeedbackMessageComponent feedback={newsFeedback} onClear={clearNewsFeedback} />
 
+                    <Row className="mb-3">
+                        <Col md={3}>
+                            <Form.Group controlId="newsPageSizeSelect">
+                                <Form.Label>Itens por página:</Form.Label>
+                                <Form.Select value={newsPageInfo.pageSize} onChange={handleNewsPageSizeChange}>
+                                    {[5, 10, 20, 50].map(n => (
+                                        <option key={n} value={n}>{n}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+
                     {newsLoading ? (
                         <div className="text-center py-4">
                             <Spinner animation="border" size="sm" className="me-2" />
                             Carregando notícias...
                         </div>
                     ) : newsList.length > 0 ? (
-                        <BlogTable 
-                            news={newsList} 
-                            onEdit={openNewsEdit} 
-                            onDelete={openNewsDeleteConfirm} 
-                        />
+                        <>
+                            <BlogTable
+                                news={newsList}
+                                onEdit={openNewsEdit}
+                                onDelete={openNewsDeleteConfirm}
+                            />
+
+                            <div className="d-flex justify-content-center mt-3">
+                                <CustomPagination
+                                    currentPage={newsPageInfo.currentPage}
+                                    totalPages={newsPageInfo.totalPages}
+                                    onPageChange={handleNewsPageChange}
+                                />
+                            </div>
+                        </>
                     ) : (
                         <div className="text-center py-4">Nenhuma notícia encontrada.</div>
                     )}
