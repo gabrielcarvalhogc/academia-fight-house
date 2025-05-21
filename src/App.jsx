@@ -7,6 +7,7 @@ import AdminPage from './pages/AdminPage/AdminPage';
 import ProductsPage from './pages/ProductPage/ProductPage';
 import HomePage from './pages/HomePage/HomePage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
+import BlogPage from './pages/BlogPage/BlogPage';
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage/>} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/produtos-pulser" element={<ProductsPage />} />
+          <Route path="/produtos" element={<ProductsPage />} />
           <Route path="/:category" element={<CategoryPage />} />
+          <Route path="/blog" element={<BlogPage />} />
         </Routes>
     </Router>
   );

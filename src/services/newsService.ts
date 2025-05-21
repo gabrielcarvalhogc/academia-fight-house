@@ -24,7 +24,6 @@ export const newsService = {
                     params: { page, size, sort }
                 }
             )
-            console.log('Notícias paginadas:', response)
             return response
         } catch (error) {
             console.error('Erro ao buscar notícias paginadas:', error)
