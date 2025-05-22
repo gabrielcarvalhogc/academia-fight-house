@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Modal, Button, Form, Col, Row } from 'react-bootstrap';
 import { NewsFormData, News } from '../../types/newsType';
-
+import { formatDateForInput } from '../../hooks/useFormatDateForInput';
 interface BlogModalProps {
     show: boolean;
     onHide: () => void;
@@ -30,7 +30,7 @@ const BlogModal: React.FC<BlogModalProps> = ({
             setFormData({
                 title: newsItem.title,
                 author: newsItem.author,
-                date: newsItem.date,
+                date: formatDateForInput(newsItem.date),
                 content: newsItem.content,
                 imageFile: undefined
             });
