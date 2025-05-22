@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, Spinner, Row, Col, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import CustomPagination from '../../components/pagination/CustonPagination';
 import newsService from '../../services/newsService';
@@ -38,13 +39,12 @@ export default function BlogPage() {
     return (
         <>
             <Header />
-
             <main
                 style={{
                     marginTop: '111px',
                     backgroundColor: 'var(--gray)',
                     fontFamily: 'var(--font-text)',
-                    height: 'calc(100vh - 400px)',
+                    minHeight: 'calc(100vh - 400px)',
                 }}
                 className="px-3"
             >
@@ -62,22 +62,32 @@ export default function BlogPage() {
                             <Row xs={1} md={2} lg={3} className="g-5">
                                 {newsList.map((news) => (
                                     <Col key={news.id}>
-                                        <div 
-                                            className="rounded-4" 
-                                            style={{ minWidth: '200px', backgroundColor: 'white', border: "1px solid #000", boxShadow : "5px 5px 8px rgba(0, 0, 0, 0.38)" }}
+                                        <Link
+                                            to={`/blog/${news.id}/${news.slug}`}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
                                         >
-                                            {news.image && (
-                                                <Card.Img
-                                                    variant="top"
-                                                    src={news.image}
-                                                    style={{ objectFit: 'cover', height: '200px' }}
-                                                    className='rounded-top-4'
-                                                />
-                                            )}
-                                            <Card.Body>
-                                                <Card.Title style={{fontFamily: "var(--font-text)"}} className='fs-6 py-3 px-2 text-center'>{news.title}</Card.Title>
-                                            </Card.Body>
-                                        </div>
+                                            <div
+                                                className="rounded-4 shadow"
+                                                style={{ minWidth: '200px', backgroundColor: 'white'}}
+                                            >
+                                                {news.image && (
+                                                    <Card.Img
+                                                        variant="top"
+                                                        src={news.image}
+                                                        style={{ objectFit: 'cover', height: '200px' }}
+                                                        className="rounded-top-4"
+                                                    />
+                                                )}
+                                                <Card.Body>
+                                                    <Card.Title
+                                                        style={{ fontFamily: 'var(--font-text)' }}
+                                                        className="fs-6 py-3 px-2 text-center"
+                                                    >
+                                                        {news.title}
+                                                    </Card.Title>
+                                                </Card.Body>
+                                            </div>
+                                        </Link>
                                     </Col>
                                 ))}
                             </Row>
@@ -91,11 +101,11 @@ export default function BlogPage() {
                             </div>
                         </>
                     ) : (
-                        <EmptyState/>
+                        <EmptyState />
                     )}
                 </Container>
             </main>
-            <Footer/>
+            <Footer />
         </>
     );
 }

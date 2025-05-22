@@ -35,9 +35,9 @@ export const newsService = {
      * Obtém uma notícia pelo ID.
      * @param id ID da notícia
      */
-    getById: async (id: number): Promise<News> => {
+    getById: async (id: number, slug: string): Promise<News> => {
         try {
-            return await apiService.get<News>(`${NEWS_GET_ENDPOINT}/${id}`);
+            return await apiService.get<News>(`${NEWS_GET_ENDPOINT}/${id}/${slug}`);
         } catch (error) {
             console.error(`Erro ao buscar notícia ${id}:`, error);
             throw error;

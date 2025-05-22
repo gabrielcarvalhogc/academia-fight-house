@@ -1,6 +1,7 @@
 export interface News {
     id: number;
     title: string;
+    slug: string;
     author: string;
     image: string;
     content: string;
@@ -9,6 +10,7 @@ export interface News {
 
 export interface NewsFormData {
     title: string;
+    slug: string;
     author: string;
     imageFile: File | undefined;
     content: string;
