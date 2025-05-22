@@ -6,6 +6,7 @@ import { Alert, Container } from "react-bootstrap";
 import CategoryProductSlider from "../../components/productCategorySlider/ProductCategorySlider";
 import { Product } from "../../types/productTypes";
 import ProductCard from "../../components/productCard/ProductCard";
+import EmptyState from "../../components/emptyState/EmptyState";
 
 function ProductPage() {
     const [categories, setCategories] = useState<string[]>([]);
@@ -60,10 +61,10 @@ function ProductPage() {
                 loading={loadingSearch}
             />
 
-            <main style={{ backgroundColor: '#F5F5F5' }}>
+            <main style={{ backgroundColor: '#F5F5F5', height: 'calc(100vh - 111px)' }}>
                 <CategoryNavBar />
                 <h1 className='text-center fw-bold py-4' style={{ fontFamily: 'var(--font-title)' }}>
-                    PRODUTOS PULSER
+                    PRODUTOS
                 </h1>
 
                 <Container fluid className='py-4'>
@@ -76,8 +77,10 @@ function ProductPage() {
                     )}
 
                     {searchTerm && products.length === 0 && !loadingSearch && (
-                        <p className='ps-4 py-5 fs-4'>Nenhum produto encontrado.</p>
+                        <EmptyState/>
                     )}
+
+                    {products.length === 0 && (<EmptyState/>)}
 
                     {products.length > 0 && (
                         <div className='mb-4'>

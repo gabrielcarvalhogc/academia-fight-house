@@ -5,6 +5,7 @@ import CustomPagination from '../../components/pagination/CustonPagination';
 import newsService from '../../services/newsService';
 import { News } from '../../types/newsType';
 import Footer from '../../components/footer/Footer';
+import EmptyState from '../../components/emptyState/EmptyState';
 
 export default function BlogPage() {
     const [newsList, setNewsList] = useState<News[]>([]);
@@ -43,6 +44,7 @@ export default function BlogPage() {
                     marginTop: '111px',
                     backgroundColor: 'var(--gray)',
                     fontFamily: 'var(--font-text)',
+                    height: 'calc(100vh - 400px)',
                 }}
                 className="px-3"
             >
@@ -89,7 +91,7 @@ export default function BlogPage() {
                             </div>
                         </>
                     ) : (
-                        <div className="text-center py-5">Nenhuma notícia encontrada.</div>
+                        <EmptyState/>
                     )}
                 </Container>
             </main>
