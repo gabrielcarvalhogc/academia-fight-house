@@ -4,7 +4,7 @@ import "./SobreNos.css";
 
 function SobreNos() {
     return (
-        <section aria-labelledby="sobre-nos-title" id='sobre'>
+        <section aria-labelledby="sobre-nos-title" id='sobre' className="sobre-container">
             <h1 
                 className="sobre-title text-center text-uppercase py-3 fs-1 text-white"
                 data-bs-spy="scroll" 
