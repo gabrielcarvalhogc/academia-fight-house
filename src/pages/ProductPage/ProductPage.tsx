@@ -7,14 +7,16 @@ import CategoryProductSlider from "../../components/productCategorySlider/Produc
 import { Product } from "../../types/productTypes";
 import ProductCard from "../../components/productCard/ProductCard";
 import EmptyState from "../../components/emptyState/EmptyState";
+import Footer from "../../components/footer/Footer";
 
 function ProductPage() {
     const [categories, setCategories] = useState<string[]>([]);
     const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [products, setProducts] = useState<Product[]>([]);
+    const [productsByName, setProductsByName] = useState<Product[]>([]);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [errorSearch, setErrorSearch] = useState<string | null>(null);
+    const [hasSearched, setHasSearched] = useState<boolean>(false);
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -38,12 +40,13 @@ function ProductPage() {
         e.preventDefault();
         if (!searchTerm.trim()) return;
 
+        setHasSearched(true);
         setLoadingSearch(true);
         setErrorSearch(null);
 
         try {
             const results = await productService.getProductsByName(searchTerm);
-            setProducts(results);
+            setProductsByName(results);
         } catch (err) {
             console.error('Erro ao buscar produtos:', err);
             setErrorSearch('Não foi possível buscar os produtos. Tente novamente.');
@@ -61,7 +64,7 @@ function ProductPage() {
                 loading={loadingSearch}
             />
 
-            <main style={{ backgroundColor: '#F5F5F5', height: 'calc(100vh - 111px)' }}>
+            <main style={{ backgroundColor: '#F5F5F5', minHeight: 'calc(100vh - 400px)' }}>
                 <CategoryNavBar />
                 <h1 className='text-center fw-bold py-4' style={{ fontFamily: 'var(--font-title)' }}>
                     PRODUTOS
@@ -76,17 +79,11 @@ function ProductPage() {
                         </div>
                     )}
 
-                    {searchTerm && products.length === 0 && !loadingSearch && (
-                        <EmptyState/>
-                    )}
-
-                    {products.length === 0 && (<EmptyState/>)}
-
-                    {products.length > 0 && (
+                                        {productsByName.length > 0 && (
                         <div className='mb-4'>
-                            <h5 className='fs-2 py-4' style={{ fontFamily: 'var(--font-title)'}}>Resultados da busca:</h5>
+                            <h5 className='fs-2 py-4' style={{ fontFamily: 'var(--font-title)' }}>Resultados da busca:</h5>
                             <div className='d-flex overflow-auto gap-4 py-2'>
-                                {products.map((product, idx) => (
+                                {productsByName.map((product, idx) => (
                                     <div key={idx} className='' style={{ minWidth: '200px' }}>
                                         <ProductCard
                                             imageSrc={product.imageURL}
@@ -101,6 +98,10 @@ function ProductPage() {
                         </div>
                     )}
 
+                    {!loadingSearch && hasSearched && productsByName.length === 0 && (
+                        <EmptyState />
+                    )}
+
                     {!loadingCategories && categories.map(cat => (
                         <CategoryProductSlider
                             key={cat}
@@ -108,8 +109,13 @@ function ProductPage() {
                             title={cat.toUpperCase()}
                         />
                     ))}
+
+                    {!loadingCategories && categories.length == 0 && (
+                        <EmptyState />
+                    )}
                 </Container>
             </main>
+            <Footer />
         </>
     );
 }

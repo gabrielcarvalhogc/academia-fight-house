@@ -34,8 +34,8 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <section style={{height: "100vh"}} className="d-flex justify-content-center align-items-center bg-primary">
-      <Form className="w-25 p-3 text-bg-light rounded-3 fs-5" onSubmit={handleSubmit}>
+    <section style={{ height: "100vh" }} className="d-flex justify-content-center align-items-center bg-primary">
+      <Form style={{ minWidth: "280px" }} className="p-3 text-bg-light rounded-3 fs-5" onSubmit={handleSubmit}>
         <h1 className="mb-4">Admin Login</h1>
         {error && <Alert variant="danger" className="fs-6 p-2">{error}</Alert>}
         <Form.Group className="mb-4" controlId="formBasicUser">
