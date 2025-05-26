@@ -70,7 +70,7 @@ function ProductPage() {
                     PRODUTOS
                 </h1>
 
-                <Container fluid className='py-4'>
+                <Container fluid className='py-4 px-0'>
                     {errorSearch && <Alert variant='danger'>{errorSearch}</Alert>}
 
                     {loadingSearch && (
@@ -79,10 +79,10 @@ function ProductPage() {
                         </div>
                     )}
 
-                                        {productsByName.length > 0 && (
+                    {productsByName.length > 0 && (
                         <div className='mb-4'>
-                            <h5 className='fs-2 py-4' style={{ fontFamily: 'var(--font-title)' }}>Resultados da busca:</h5>
-                            <div className='d-flex overflow-auto gap-4 py-2'>
+                            <h5 className='text-uppercase fs-2 py-2 ps-4' style={{ fontFamily: 'var(--font-title)' }}>Resultados da busca:</h5>
+                            <div className='d-flex overflow-auto py-2'>
                                 {productsByName.map((product, idx) => (
                                     <div key={idx} className='' style={{ minWidth: '200px' }}>
                                         <ProductCard

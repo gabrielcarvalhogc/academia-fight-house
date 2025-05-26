@@ -58,7 +58,7 @@ export default function NewsPage() {
 
                     <h1
                         style={{ fontFamily: 'var(--font-title)' }}
-                        className="px-3 text-center fs-3"
+                        className="px-3 text-center fs-2"
                     >
                         {news.title}
                     </h1>
@@ -72,7 +72,7 @@ export default function NewsPage() {
                     </Figure>
 
                     <Container 
-                        className="px-3"
+                        className="px-0 news-content"
                         style={{
                             whiteSpace: 'pre-line',
                             lineHeight: 1.4,
@@ -82,6 +82,15 @@ export default function NewsPage() {
                         <p>{news.content}</p>
                         <p className="m-0 fw-bold text-end pe-3 pb-3">{news.author}</p>
                     </Container>
+                        <style>
+                        {`
+                            @media (min-width: 680px) {
+                                .news-content p {
+                                    font-size: 1.25rem;
+                                }
+                            }
+                        `}
+                        </style>
                 </Container>
             </main>
             <Footer />

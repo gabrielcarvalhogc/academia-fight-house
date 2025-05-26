@@ -40,24 +40,24 @@ const CategoryProductSlider: React.FC<CategorySliderProps> = ({ category, title 
     const displayProducts = products.slice(0, 5);
 
     return (
-        <Container fluid className="my-4 px-3">
-            <div className='d-flex justify-content-between align-items-center mb-4' style={{ maxWidth: '1100px' }}>
-                <h2 className="text-uppercase" id={category} style={{ fontFamily: 'var(--font-title)' }}>
+        <Container fluid className="my-4 px-0">
+            <div className='d-flex justify-content-between align-items-center mb-4 pe-2' style={{ maxWidth: '1100px' }}>
+                <h2 className="text-uppercase ps-4" id={category} style={{ fontFamily: 'var(--font-title)' }}>
                     {category || title}
                 </h2>
                 <Button variant="dark" onClick={() => navigate(`/${category}`)}>
                     Ver todos
                 </Button>
             </div>
-            <div className="position-relative">
+            <div className="position-relative px-0" style={{ width: '100vw'}}>
                 <div
                     ref={sliderRef}
-                    className="d-flex overflow-auto py-2 gap-4"
-                    style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    className="d-flex overflow-auto py-2"
+                    style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none', width: '100vw' }}
                 >
                     {displayProducts.map(product => (
                         <div key={product.id} className="flex-shrink-0" style={{ scrollSnapAlign: 'start' }}>
-                            <ProductCardWrapper product={product} />
+                            <ProductCardWrapper product={product}/>
                         </div>
                     ))}
                 </div>

@@ -21,7 +21,6 @@ const CategoryPage: React.FC = () => {
                 if (category) {
                     const items = await productService.getProductsByCategory(category);
                     setProducts(items);
-                    console.log(products)
                 }
             } catch (err) {
                 setError('Erro ao carregar produtos da categoria');

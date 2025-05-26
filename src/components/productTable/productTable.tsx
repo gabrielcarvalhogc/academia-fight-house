@@ -20,7 +20,6 @@ const ProductTable: React.FC<ProductTableProps> = ({
     }
 
     if (!products || products.length === 0) {
-        console.log(products);
         return <div className="text-center py-4">Nenhum produto encontrado.</div>;
     }
 
