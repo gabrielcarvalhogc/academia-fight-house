@@ -4,6 +4,7 @@ import kickboxingInfantil from "../assets/modalidade-turma-kids.jpg";
 import muaythai from "../assets/modalidade-muaythai.jpg";
 import personal from "../assets/modalidade-personal.jpg";
 import taekwondo from "../assets/modalidade-taekwondo.jpg";
+import jiuJitsu from "../assets/modalidade-jiujitsu.png";
 
 export const modalidades = [
     {
@@ -37,6 +38,14 @@ export const modalidades = [
         "horarios": ["20:00 hrs", "21:00 hrs", "07:00 hrs"],
         "subtitulo": "Sobre o Muay thai",
         "descricao": "O Muay Thai é uma arte marcial tailandesa que utiliza golpes com os punhos, cotovelos, joelhos e pernas, conhecida como a “arte das oito armas”. A prática melhora força, resistência e flexibilidade, sendo ideal para defesa pessoal, condicionamento físico e competições."
+    },
+    {
+        "titulo": "Jiu-jitsu",
+        "imagem": `${jiuJitsu}`,
+        "dias": ["ter/qui", "ter/qui"],
+        "horarios": ["09:00 hrs", "18:00 hrs"],
+        "subtitulo": "Sobre o Jiu-jitsu",
+        "descricao": "O Jiu-Jitsu é uma arte marcial focada em projeções, imobilizações e finalizações no solo. Trabalha força, resistência, flexibilidade e raciocínio estratégico. Ideal para quem busca defesa pessoal, controle corporal ou até mesmo competir"
     },
     {
         "titulo": "Taekwondo",

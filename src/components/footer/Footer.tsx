@@ -34,12 +34,12 @@ function Footer() {
                     Rua 25 QD 33 Lote 22 - Jardim Oriente
                 </a>
                 <a 
-                    href="https://www.instagram.com/afhramos?igsh=MXNkcGNyazRpMXF6Nw=="
+                    href="https://www.instagram.com/fighthousevalparaiso/"
                     target='_blank' 
                     className="fw-bold link-underline bold link-opacity-50-hover link-underline-opacity-0"
                 >
                     <i className="bi bi-instagram pe-2"></i>
-                    @afhramos
+                    @fighthousevalparaiso
                 </a>
                 <a 
                     href='https://wa.link/hm1e2n'

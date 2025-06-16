@@ -75,6 +75,18 @@ function Header() {
                             >
                                 Contato
                             </Nav.Link>
+                            <Nav.Link
+                                href="/produtos"
+                                className="text-black"
+                            >
+                                Produtos
+                            </Nav.Link>
+                            <Nav.Link
+                                href="/blog"
+                                className="text-black"
+                            >
+                                Blog
+                            </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
