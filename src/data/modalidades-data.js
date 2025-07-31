@@ -19,7 +19,7 @@ export const modalidades = [
         "titulo": "Kickboxing",
         "imagem": `${kickboxing}`,
         "dias": ["seg/qua/sex", "seg/qua/sex"],
-        "horarios": ["08:00 hrs", "20:00 hrs"],
+        "horarios": ["08:00 hrs", "20:30 hrs"],
         "subtitulo": "Sobre o kickboxing",
         "descricao": "O kickboxing é uma luta que combina socos e chutes, com até 8 modalidades que variam nas regras e técnicas. A prática é excelente para quem busca competir, melhorar o condicionamento físico e desenvolver força, resistência e coordenação."
     },
@@ -51,7 +51,7 @@ export const modalidades = [
         "titulo": "Taekwondo",
         "imagem": `${taekwondo}`,
         "dias": ["ter/qui"],
-        "horarios": ["17:30 hrs"],
+        "horarios": ["17:00 hrs"],
         "subtitulo": "Sobre o Taekwondo",
         "descricao": "Arte marcial coreana que combina técnica, velocidade e explosão, com ênfase em chutes rápidos e precisos. Além de melhorar condicionamento físico, flexibilidade e coordenação, desenvolve disciplina, autocontrole e confiança, fundamentais dentro e fora do tatame.Indicado para crianças, jovens e adultos, o Taekwondo é ideal para quem busca defesa pessoal, competições ou evolução física e mental."
     },
